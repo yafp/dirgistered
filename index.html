@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>DirGisterED</title>
+
+    <!-- Insert this line above script imports  -->
+    <script>
+    if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+    }
+    </script>
+
+    <!-- jQuery -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        // event listener for source folder
+        //
+        document.getElementById('partyS').addEventListener('click', _ => {
+            document.getElementById('sourceSelection').click()
+        })
+
+        // event listener for target folder
+        //
+        document.getElementById('partyT').addEventListener('click', _ => {
+            document.getElementById('targetSelection').click()
+        })
+
+        // Tabs
+        $("#myTab a").click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+    </script>
+
+    <script>
+
+    // ################################################################
+    //
+    // ################################################################
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+
+
+    // ################################################################
+    // Generate and return a timestamp (ymd-hms)
+    // ################################################################
+    function getActualFullDate() {
+        var d = new Date();
+        var day = addZero(d.getDate());
+        var month = addZero(d.getMonth()+1);
+        var year = addZero(d.getFullYear());
+        var h = addZero(d.getHours());
+        var m = addZero(d.getMinutes());
+        var s = addZero(d.getSeconds());
+        //return day + ". " + month + ". " + year + " (" + h + ":" + m + ")";
+        return year + month + day + "-" + h + m + s;
+    }
+
+
+
+    // ################################################################
+    // Add a new line to the log on the Main tab
+    // ################################################################
+    function updateUILog(logText) {
+        var timestamp = getActualFullDate();
+
+        $('#ta_log').val($('#ta_log').val() + timestamp + ' '+logText+'\n');
+    }
+
+
+    // ################################################################
+    //
+    // ################################################################
+    function updateSourceUI() {
+        var sourceFolderPath = document.getElementById("sourceSelection").files[0].path;
+        var sourceFolderName = document.getElementById("sourceSelection").files[0].name;
+
+        // update UI
+        $("#showSelectedSourceFolderPath").val(sourceFolderPath);
+
+        // update UI log
+        updateUILog('Source folder set to "'+sourceFolderPath+'"')
+
+        // update console log
+        console.log("Source: " +sourceFolderPath);
+    }
+
+    // ################################################################
+    //
+    // ################################################################
+    function updateTargetUI() {
+        var targetFolderPath = document.getElementById("targetSelection").files[0].path;
+        var targetFolderName = document.getElementById("targetSelection").files[0].name;
+
+        // update UI
+        $("#showSelectedTargetFolderPath").val(targetFolderPath);
+
+        // update UI log
+        updateUILog('Target folder set to "'+targetFolderPath+'"')
+
+        // update console log
+        console.log("Target: " +targetFolderPath);
+    }
+
+
+    // ################################################################
+    // Resets the UI of the Main tab back to defaults
+    // ################################################################
+    function resetMainUI() {
+        // source & target
+        $("#showSelectedSourceFolderPath").val("");
+        $("#showSelectedTargetFolderPath").val("");
+
+        // log
+        $("#ta_log").val("");
+
+        // update console log
+        console.log("Finished Reset of Main UI");
+    }
+
+
+
+    // ################################################################
+    //
+    // ################################################################
+    function createSingleHTMLIndex(sourceFolderPath, timestampedTargetFolderPath) {
+
+        var fs = require('fs');
+
+        console.log("-----------SingleIndex Start ---------");
+        console.log("Current source path: "+sourceFolderPath);
+        console.log("Current target path: "+timestampedTargetFolderPath);
+
+        // update UI
+        updateUILog('Indexing: "'+sourceFolderPath+'"');
+
+        // create target folder if it doesnt exists yet
+        if (!fs.existsSync(timestampedTargetFolderPath)) {
+            console.log("Created target directory ________");
+            fs.mkdirSync(timestampedTargetFolderPath);
+        }
+
+        // generate index.html in target dir
+        var fileName = timestampedTargetFolderPath+"/index.htm";
+
+        console.log("+++++"+fileName);
+
+        var content = "<html> \
+        <h1>DirGisterED Index</h1> \
+        <h3>Folder: "+sourceFolderPath+"</h3> \
+        <hr> \
+        </html>";
+
+        fs.writeFile(fileName, content, function (err) {
+            if(err){
+                alert("An error ocurred creating the file "+ err.message)
+            }
+
+            console.log('Single index for "'+sourceFolderPath+ '"created.');
+
+            // update UI
+            updateUILog('Indexed: "'+sourceFolderPath+'"');
+        });
+
+
+        var fs = require( 'fs' );
+        var path = require( 'path' );
+        var process = require( "process" );
+
+        var moveFrom = sourceFolderPath;
+        var moveTo = timestampedTargetFolderPath;
+
+        // folder
+        var dirNameArray = [];
+        var dirFullPathArray = [];
+
+        // file
+        var fileNameArray = [];
+        var fileFullPathArray = [];
+
+        // sync (async might be much better ... should check that)
+        filenames = fs.readdirSync(moveFrom);
+        for (i = 0; i < filenames.length; i ++) {
+
+            stats = fs.statSync(moveFrom + "/" + filenames[i]);
+            var fromPath = path.join( moveFrom, filenames[i] );
+
+
+            // Store all directory informations in arrays
+            //
+            if(stats.isDirectory()) {
+                // store entire path
+                dirFullPathArray.push(fromPath);
+
+                // store folder name itself
+                var folderName = fromPath.substr(fromPath.lastIndexOf('/') + 1);
+                //dirNameArray.push(folderName);
+                dirNameArray[dirNameArray.length] = folderName;
+
+                //console.log(dirNameArray.length);
+            }
+
+
+            // Store all file informations in arrays
+            //
+            if(stats.isFile()) {
+                // store entire path
+                fileFullPathArray.push(fromPath);
+
+                // store folder name itself
+                var curFileName = fromPath.substr(fromPath.lastIndexOf('/') + 1);
+                fileNameArray.push(curFileName);
+            }
+        }
+
+        console.log("Finished reading directory");
+
+
+        // building body text for folders
+        //
+        var bodyFolderText = "<h3>Folders</h3>";
+
+        for (var i=0; i < dirNameArray.length; i++) {
+            //console.log(dirNameArray[i]);
+            bodyFolderText += '<a href='+dirNameArray[i]+'/index.htm>'+dirNameArray[i]+'</a><br>'
+        }
+
+        // append to index file
+        fs.appendFile(fileName, bodyFolderText, function (err) {
+
+        });
+
+
+        // building body text for files
+        //
+        var bodyFilesText = "<h3>Files</h3>";
+
+        for (var i=0; i < fileNameArray.length; i++) {
+            bodyFilesText += fileNameArray[i]+'<br>'
+        }
+
+        // append to index file
+        fs.appendFile(fileName, bodyFilesText, function (err) {
+
+        });
+
+        console.log("Finished index creation for ..."+sourceFolderPath);
+        console.log("Should now check subdirs of "+sourceFolderPath);
+
+        checkSubDirs(sourceFolderPath, timestampedTargetFolderPath);
+    }
+
+
+
+
+    // ################################################################
+    //
+    // ################################################################
+    function checkSubDirs(sourceFolderPath, timestampedTargetFolderPath) {
+        console.log("DUMMY - Method checkSubDirs");
+
+        var fs = require('fs');
+        var path = require( 'path' );
+        var process = require( "process" );
+
+        filenames = fs.readdirSync(sourceFolderPath);
+        for (i = 0; i < filenames.length; i ++) {
+
+            stats = fs.statSync(sourceFolderPath + "/" + filenames[i]);
+            var fromPath = path.join( sourceFolderPath, filenames[i] );
+
+            var newTargetPath = timestampedTargetFolderPath+"/"+filenames[i];
+
+            // Store all directory informations in arrays
+            //
+            if(stats.isDirectory()) {
+                console.log("Should start single index generation for "+fromPath+" in "+newTargetPath);
+                createSingleHTMLIndex(fromPath, newTargetPath);
+            }
+        }
+    }
+
+
+
+
+    // ################################################################
+    // Start the Index generation process
+    // ################################################################
+    function startIndexing() {
+
+        console.log("Started startIndexing()");
+
+        var fs = require('fs');
+
+        // source
+        //
+        try {
+            var sourceFolderPath = document.getElementById("sourceSelection").files[0].path;
+            //var sourceFolderName = document.getElementById("sourceSelection").files[0].name;
+            //console.log(sourceFolderName);
+            //console.log(sourceFolderPath);
+
+            // Check if folder exists
+            if (fs.existsSync(sourceFolderPath)) {
+                console.log("Source folder exists");
+            }
+            else {
+                alert("Source folder does not exist, aborting");
+                return;
+            }
+        }
+        catch(err) {
+            console.log("Unable to validate source");
+            return;
+        }
+
+
+
+        // target
+        //
+        try {
+            var targetFolderPath = document.getElementById("targetSelection").files[0].path;
+            //var targetFolderName = document.getElementById("targetSelection").files[0].name;
+            //console.log(targetFolderName);
+            //console.log(targetFolderPath);
+
+            // Check if folder exists
+            if (fs.existsSync(targetFolderPath)) {
+                console.log("Target folder exists");
+            }
+            else {
+                alert("Target folder does not exist, aborting");
+                return;
+            }
+        }
+        catch(err) {
+            console.log("Unable to validate target");
+            return;
+        }
+
+        if(sourceFolderPath != targetFolderPath) {
+            console.log("Everything looks fine - lets start");
+
+            // make new date based folder in target
+            var timestamp = getActualFullDate();
+            var timestampedTargetFolderPath = targetFolderPath+'/'+timestamp+'---DirGisterED-Index'
+            var fs = require('fs');
+            fs.mkdir(timestampedTargetFolderPath);
+
+            updateUILog('Generated target folder "'+timestampedTargetFolderPath+'"')
+
+
+            // Start html generation madness
+            createSingleHTMLIndex(sourceFolderPath, timestampedTargetFolderPath)
+
+        }
+        else {
+            console.log ("Source and target can't be the same directory, aborting.")
+            return;
+        }
+
+
+        console.log("Finished index process");
+
+        alert("Finished Indexing");
+    }
+    </script>
+
+
+
+    <!-- Insert this line after script imports -->
+    <script>
+    if (window.module) module = window.module;
+    </script>
+
+    <!-- CSS -->
+    <!-- General -->
+    <link rel="stylesheet" type="text/css" href="css/dirgistered.css" media="screen" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+
+
+
+
+
+<body>
+    <div class="container">
+        <h1><img src="img/fa-list-alt_256_0_000000_none.png" width="32px"> DirGisterED <small>A directory indexer</small></h1>
+        <hr>
+
+
+        <div class="bs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#sectionA"><i class="fa fa-home" aria-hidden="true"></i> Main</a></li>
+                <li><a href="#sectionB"><i class="fa fa-cog" aria-hidden="true"></i> Preferences</a></li>
+                <li><a href="#sectionAbout"><i class="fa fa-info-circle" aria-hidden="true"></i> About</a></li>
+            </ul>
+
+
+            <!-- tabs -->
+            <div class="tab-content">
+
+
+
+                <!-- tab 1 -->
+                <div id="sectionA" class="tab-pane fade in active">
+
+                    <br>
+
+                    <!-- source -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default custom" id="partyS" class="very-sweet-looking"><i class="fa fa-folder" aria-hidden="true"></i> Source</button>
+                                </span>
+                                <input id="sourceSelection" type="file" webkitdirectory style="display: none" onChange="updateSourceUI()" />
+                                <input type="text" class="form-control" id="showSelectedSourceFolderPath" placeholder="Select a source folder" disabled="disabled">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <!-- target -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default custom" id="partyT" class="very-sweet-looking"><i class="fa fa-folder" aria-hidden="true"></i> Target</button>
+                                </span>
+                                <input id="targetSelection" type="file" webkitdirectory style="display: none" onChange="updateTargetUI();" />
+                                <input type="text" class="form-control" id="showSelectedTargetFolderPath" placeholder="Select a target folder" disabled="disabled">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <br>
+
+                    <button type="button" class="btn btn-primary custom" onclick="startIndexing();"><i class="fa fa-play" aria-hidden="true"></i>
+                        Start</button>
+
+                        <div class="form-group">
+                            <label for="comment">Log:</label>
+                            <textarea class="form-control" rows="5" id="ta_log" disabled="disabled"></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-default custom" onclick="resetMainUI();"><i class="fa fa-undo"></i> Reset</button>
+
+                    </div>
+                    <!-- /tab 1 -->
+
+                    <!-- tab 2 -->
+                    <div id="sectionB" class="tab-pane fade">
+                        <div class="checkbox-inline">
+                            <label>
+                                <input type="checkbox" checked="checked" />
+                                <span>Setting 1</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /tab 2 -->
+
+
+                    <!-- tab 3 -->
+                    <div id="sectionAbout" class="tab-pane fade">
+                        <h3>Basics</h3>
+                        <p>DirGisterED scans the content of a source folder and generates a html index to a user-defined source folder.</p>
+                        <h3>Step by Step</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item">Define a folder to get indexed (source)</li>
+                            <li class="list-group-item">Define where the index should be written to (target)</li>
+                            <li class="list-group-item">Start indexing</li>
+                            <li class="list-group-item">Wait</li>
+                            <li class="list-group-item">Enjoy html index</li>
+                        </ul>
+                    </div>
+                    <!-- /tab 3 -->
+
+                </div>
+                <!-- / tabs -->
+
+
+
+                <!-- footer -->
+                <footer class="footer">
+                    <center>
+                        <small>
+                            <p><b>DirGisterED</b> is developed by <a href="http://www.yafp.de">yafp</a> and is using <b>node <script>document.write(process.versions.node)</script></b>, <b>Chromium <script>document.write(process.versions.chrome)</script></b>, and <b>Electron <script>document.write(process.versions.electron)</script></b>.</p>
+                        </small>
+                    </center>
+                </footer>
+                <!-- /footer -->
+
+            </div>
+            <!-- /container -->
+
+        </body>
+        </html>
