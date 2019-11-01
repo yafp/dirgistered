@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>DirGisterED</title>
+
+    <!-- Insert this line above script imports  -->
+    <script>
+    if (typeof module === 'object')
+    {
+        window.module = module;
+        module = undefined;
+    }
+    </script>
+
+    <!-- jQuery -->
+    <script src="js/jquery/jquery-3.4.1.min.js"></script>
+
+    <!-- dirgistered -->
+    <script src="js/dirgistered/dirgistered.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        // event listener for source folder
+        //
+        document.getElementById('partyS').addEventListener('click', _ => {
+            document.getElementById('sourceSelection').click()
+        })
+
+        // event listener for target folder
+        //
+        document.getElementById('partyT').addEventListener('click', _ => {
+            document.getElementById('targetSelection').click()
+        })
+
+        // Tabs
+        $("#myTab a").click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+
+    showNoty("success", "Finished init");
+    </script>
+
+
+    <!-- Insert this line after script imports -->
+    <script>
+    if (window.module) module = window.module;
+    </script>
+
+    <!-- CSS -->
+    <!-- General -->
+    <link rel="stylesheet" type="text/css" href="css/dirgistered.css" media="screen" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+
+
+
+<body>
+    <div class="container">
+        <div class="bs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#sectionA"><i class="fa fa-home" aria-hidden="true"></i> Main</a></li>
+                <li><a href="#sectionB"><i class="fa fa-cog" aria-hidden="true"></i> Preferences</a></li>
+                <li><a href="#sectionAbout"><i class="fa fa-info-circle" aria-hidden="true"></i> About</a></li>
+            </ul>
+
+
+            <!-- tabs -->
+            <div class="tab-content">
+
+                <!-- tab 1 -->
+                <div id="sectionA" class="tab-pane fade in active">
+
+                    <br>
+
+                    <!-- source -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default custom" id="partyS" class="very-sweet-looking"><i class="fa fa-folder" aria-hidden="true"></i> Source</button>
+                                </span>
+                                <input id="sourceSelection" type="file" webkitdirectory style="display: none" onChange="updateSourceUI()" />
+                                <input type="text" class="form-control" id="showSelectedSourceFolderPath" placeholder="Select a source folder" disabled="disabled">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <!-- target -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default custom" id="partyT" class="very-sweet-looking"><i class="fa fa-folder" aria-hidden="true"></i> Target</button>
+                                </span>
+                                <input id="targetSelection" type="file" webkitdirectory style="display: none" onChange="updateTargetUI();" />
+                                <input type="text" class="form-control" id="showSelectedTargetFolderPath" placeholder="Select a target folder" disabled="disabled">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <br>
+
+                    <button type="button" class="btn btn-primary custom" onclick="startIndexing();"><i class="fa fa-play" aria-hidden="true"></i>
+                        Start</button>
+
+                        <div class="form-group">
+                            <label for="comment">Log:</label>
+                            <textarea class="form-control" rows="5" id="ta_log" disabled="disabled"></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-default custom" onclick="resetMainUI();"><i class="fa fa-undo"></i> Reset</button>
+
+                    </div>
+                    <!-- /tab 1 -->
+
+                    <!-- tab 2 -->
+                    <div id="sectionB" class="tab-pane fade">
+                        <div class="checkbox-inline">
+                            <label>
+                                <input type="checkbox" checked="checked" disabled="disabled"/>
+                                <span>Dummy</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /tab 2 -->
+
+
+                    <!-- tab 3 -->
+                    <div id="sectionAbout" class="tab-pane fade">
+
+                        <h3>About</h3>
+                        <p>DirGisterED is a directory indexer, it scans the content of a source folder and generates a browseable html index to a user-defined target folder.</p>
+                        <h3>Version</h3>
+                        20191101
+                        <h3>License</h3>
+                        GPL3
+                    </div>
+                    <!-- /tab 3 -->
+                </div>
+                <!-- / tabs -->
+
+    </div>
+    <!-- /container -->
+
+</body>
+</html>

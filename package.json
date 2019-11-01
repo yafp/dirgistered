@@ -1,5 +1,178 @@
 {
-  "name"    : "DirGisterED",
-  "version" : "0.1.0",
-  "main"    : "main.js"
+    "name": "dirgistered",
+    "productName": "dirgistered",
+    "version": "0.1.1",
+    "description": "A simple directory indexer",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "start-debug": "electron . --enable-logging",
+        "test": "mocha",
+        "lint": "node_modules/eslint/bin/eslint.js app/js --ignore-path=.eslintignore",
+        "pack-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=resources/installer/icon.icns --prune=true --out=dist",
+        "pack-win": "npm run pack-win-32 && npm run pack-win-64",
+        "pack-win-32": "electron-packager . dirgistered --overwrite --platform=win32 --arch=ia32 --icon=resources/installer/icon.ico --prune=true --out=dist --version-string.CompanyName=yafp --version-string.FileDescription=${productName} --version-string.ProductName=\"dirgistered\"",
+        "pack-win-64": "electron-packager . dirgistered --overwrite --platform=win32 --arch=x64 --icon=resources/installer/icon.ico --prune=true --out=dist --version-string.CompanyName=yafp --version-string.FileDescription=${productName} --version-string.ProductName=\"dirgistered\"",
+        "pack-linux": "npm run pack-linux-64",
+        "pack-linux-64": "electron-packager . dirgistered --overwrite --platform=linux --arch=x64 --icon=resources/installer/icons/1024x1024.png --prune=true --out=dist",
+        "build-mac": "electron-builder --mac",
+        "build-win": "electron-builder --win --ia32 --x64",
+        "build-linux": "electron-builder --linux"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yafp/dirgistered"
+    },
+    "bugs": {
+        "url": "https://github.com/yafp/dirgistered/issues"
+    },
+    "contributors": [
+        "Florian Poeck <fidel@yafp.de> (https://yafp.de)"
+    ],
+    "homepage": "https://github.com/yafp/dirgistered",
+    "keywords": [
+        "directory",
+        "index",
+        "indexer"
+    ],
+    "author": "yafp <fidel@yafp.de>",
+    "license": "GPL-3.0",
+    "build": {
+        "productName": "dirgistered",
+        "appId": "de.yafp.dirgistered",
+        "extraFiles": [
+            "LICENSE",
+            "docs/CHANGELOG.md",
+            "README.md"
+        ],
+        "asar": true,
+        "mac": {
+            "category": "public.app-category.productivity",
+            "artifactName": "${productName}-${version}-mac.${ext}",
+            "target": [
+                "default"
+            ]
+        },
+        "dmg": {
+            "title": "dirgistered",
+            "background": "resources/installer/dmg_background.png",
+            "iconSize": 128,
+            "contents": [
+                {
+                    "x": 355,
+                    "y": 125,
+                    "type": "link",
+                    "path": "/Applications"
+                },
+                {
+                    "x": 155,
+                    "y": 125,
+                    "type": "file"
+                }
+            ]
+        },
+        "win": {
+            "icon": "resources/installer/icon.ico",
+            "publisherName": "yafp",
+            "artifactName": "${productName}-${version}-win-${arch}.${ext}",
+            "target": [
+                "zip",
+                "nsis",
+                "portable"
+            ]
+        },
+        "portable": {
+            "unicode": false,
+            "artifactName": "${productName}-${version}-win-portable-${arch}.${ext}"
+        },
+        "nsis": {
+            "unicode": false,
+            "artifactName": "${productName}-${version}-win-installer-${arch}.${ext}"
+        },
+        "linux": {
+            "executableName": "dirgistered",
+            "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
+            "description": "a simple Electron-based directory indexer with html output",
+            "category": "Network",
+            "desktop": {
+                "Terminal": "false",
+                "Type": "Application",
+                "Categories": "GTK;GNOME;Network;Email;Chat;InstantMessaging;"
+            },
+            "target": [
+                {
+                    "target": "zip",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "AppImage",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "deb",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "snap",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "pacman",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "freebsd",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "rpm",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ]
+        },
+        "directories": {
+            "buildResources": "resources/installer/",
+            "output": "dist/"
+        },
+        "publish": [
+            {
+                "provider": "github",
+                "owner": "yafp",
+                "repo": "dirgistered",
+                "vPrefixedTagName": false
+            }
+        ]
+    },
+    "devDependencies": {
+        "electron": "^7.0.1",
+        "electron-builder": "^22.1.0",
+        "electron-packager": "^14.1.0",
+        "eslint": "^6.6.0"
+    },
+    "dependencies": {
+        "@sentry/electron": "^1.0.0",
+        "about-window": "^1.13.1",
+        "electron-is-dev": "^1.1.0",
+        "electron-json-storage": "^4.1.8",
+        "electron-log": "^3.0.8",
+        "is-online": "^8.2.0",
+        "jquery": "^3.4.1",
+        "noty": "^3.2.0-beta",
+        "pj-custom-electron-titlebar": "^3.1.6",
+        "v8-compile-cache": "^2.1.0"
+    }
 }
