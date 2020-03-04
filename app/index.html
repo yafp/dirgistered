@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>DirGisterED</title>
+    <title>dirgistered</title>
 
     <!-- Insert this line above script imports  -->
     <script>
@@ -14,144 +14,119 @@
     }
     </script>
 
-    <!-- jQuery -->
-    <script src="js/jquery/jquery-3.4.1.min.js"></script>
+    <!-- jquery -->
+    <script>
+        window.$ = window.jQuery = require("jquery");
+    </script>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- fontawesome -->
+    <script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js" defer></script>
+
+    <!-- noty -->
+    <link rel="stylesheet" href="../node_modules/noty/lib/noty.css">
+    <link rel="stylesheet" href="../node_modules/noty/lib/themes/bootstrap-v4.css">
+    <script type="text/javascript" src="../node_modules/noty/lib/noty.min.js" defer></script>
+
+    <!-- introJS -->
+    <link rel="stylesheet" href="../node_modules/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="../node_modules/intro.js/themes/introjs-modern.css">
+    <script type="text/javascript" src="../node_modules/intro.js/minified/intro.min.js" defer></script>
+
+    <!-- animate.css -->
+    <link rel="stylesheet" href="../node_modules/animate.css/animate.min.css">
 
     <!-- dirgistered -->
-    <script src="js/dirgistered/dirgistered.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <script type="text/javascript">
-    $(document).ready(function() {
-
-        // event listener for source folder
-        //
-        document.getElementById('partyS').addEventListener('click', _ => {
-            document.getElementById('sourceSelection').click()
-        })
-
-        // event listener for target folder
-        //
-        document.getElementById('partyT').addEventListener('click', _ => {
-            document.getElementById('targetSelection').click()
-        })
-
-        // Tabs
-        $("#myTab a").click(function(e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-    });
-
-    showNoty("success", "Finished init");
-    </script>
-
-
-    <!-- Insert this line after script imports -->
-    <script>
-    if (window.module) module = window.module;
-    </script>
-
-    <!-- CSS -->
-    <!-- General -->
     <link rel="stylesheet" type="text/css" href="css/dirgistered.css" media="screen" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+
 </head>
 
 
-
-
 <body>
-    <div class="container">
-        <div class="bs-example">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#sectionA"><i class="fa fa-home" aria-hidden="true"></i> Main</a></li>
-                <li><a href="#sectionB"><i class="fa fa-cog" aria-hidden="true"></i> Preferences</a></li>
-                <li><a href="#sectionAbout"><i class="fa fa-info-circle" aria-hidden="true"></i> About</a></li>
-            </ul>
+    <div class="container-fluid dirgistered_nonSelectableText">
 
 
-            <!-- tabs -->
-            <div class="tab-content">
+        <!-- empty line -->
+        <div class="row-fluid row-empty">&nbsp;</div>
 
-                <!-- tab 1 -->
-                <div id="sectionA" class="tab-pane fade in active">
+        <!-- Heading: -->
+        <div class="row-fluid" data-step="1" data-intro="<h5>Intro</h5>Welcome to <b>dirgistered</b>, a simple multi-platform directory indexer with html output.<br><br>The following intro explains how to use this application.">
 
-                    <br>
+            <!-- spinner -->
+            <div id="md_spinner" name="md_spinner" class="spinner-grow text-primary float-left" role="status" hidden>
+                <span class="sr-only">Loading...</span>
+            </div>
 
-                    <!-- source -->
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default custom" id="partyS" class="very-sweet-looking"><i class="fa fa-folder" aria-hidden="true"></i> Source</button>
-                                </span>
-                                <input id="sourceSelection" type="file" webkitdirectory style="display: none" onChange="updateSourceUI()" />
-                                <input type="text" class="form-control" id="showSelectedSourceFolderPath" placeholder="Select a source folder" disabled="disabled">
-                            </div><!-- /input-group -->
-                        </div><!-- /.col-lg-6 -->
-                    </div><!-- /.row -->
+            <!-- app name -->
+            <h2>dirgistered <img src="img/icon/icon.png" height="32"></h2>
 
-                    <!-- target -->
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default custom" id="partyT" class="very-sweet-looking"><i class="fa fa-folder" aria-hidden="true"></i> Target</button>
-                                </span>
-                                <input id="targetSelection" type="file" webkitdirectory style="display: none" onChange="updateTargetUI();" />
-                                <input type="text" class="form-control" id="showSelectedTargetFolderPath" placeholder="Select a target folder" disabled="disabled">
-                            </div><!-- /input-group -->
-                        </div><!-- /.col-lg-6 -->
-                    </div><!-- /.row -->
+            <!-- app description: -->
+            <h3>a simple multi-platform directory indexer with html output</h3>
+        </div>
 
-                    <br>
+        <!-- empty line -->
+        <div class="row-fluid row-empty">&nbsp;</div>
 
-                    <button type="button" class="btn btn-primary custom" onclick="startIndexing();"><i class="fa fa-play" aria-hidden="true"></i>
-                        Start</button>
+        <!-- source -->
+        <div class="input-group mb-3" data-step="2" data-intro="Please select the source directory (gets indexed)">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary defaultButtonWidth" type="button" onclick="uiSelectSource();"><i class="fas fa-folder"></i> Source</button>
+            </div>
+            <input type="text" class="form-control" aria-label="" aria-describedby="basic-addon1" id="showSelectedSourceFolderPath" placeholder="Select a source folder" readonly>
+        </div>
 
-                        <div class="form-group">
-                            <label for="comment">Log:</label>
-                            <textarea class="form-control" rows="5" id="ta_log" disabled="disabled"></textarea>
-                        </div>
+        <!-- target -->
+        <div class="input-group mb-3" data-step="3" data-intro="Please select the target directory">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary defaultButtonWidth" type="button" onclick="uiSelectTarget();"><i class="fas fa-folder"></i> Target</button>
+            </div>
+            <input type="text" class="form-control" aria-label="" aria-describedby="basic-addon1" id="showSelectedTargetFolderPath" placeholder="Select a target folder" readonly>
+        </div>
 
-                        <button type="button" class="btn btn-default custom" onclick="resetMainUI();"><i class="fa fa-undo"></i> Reset</button>
+        <!-- start -->
+        <button type="button" id="button_startIndexing" class="btn btn-primary defaultButtonWidth" onclick="startIndexing();" disabled data-step="4" data-intro="Finally start the indexing using this button"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
 
-                    </div>
-                    <!-- /tab 1 -->
+        <!-- empty line -->
+        <div class="row-fluid row-empty">&nbsp;</div>
 
-                    <!-- tab 2 -->
-                    <div id="sectionB" class="tab-pane fade">
-                        <div class="checkbox-inline">
-                            <label>
-                                <input type="checkbox" checked="checked" disabled="disabled"/>
-                                <span>Dummy</span>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /tab 2 -->
+        <!-- log -->
+        <div class="form-group">
+            <textarea class="form-control" rows="10" id="ta_log" disabled="disabled" placeholder="Log"></textarea>
+        </div>
 
-
-                    <!-- tab 3 -->
-                    <div id="sectionAbout" class="tab-pane fade">
-
-                        <h3>About</h3>
-                        <p>DirGisterED is a directory indexer, it scans the content of a source folder and generates a browseable html index to a user-defined target folder.</p>
-                        <h3>Version</h3>
-                        20191101
-                        <h3>License</h3>
-                        GPL3
-                    </div>
-                    <!-- /tab 3 -->
-                </div>
-                <!-- / tabs -->
+        <!-- other buttons -->
+        <button type="button" id="button_openIndex" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="openIndex();" disabled><i class="fas fa-folder-open" aria-hidden="true"></i> Open</button>
+        <button type="button" id="button_startIntro" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="startIntro();"><i class="fas fa-info-circle" aria-hidden="true"></i> Intro</button>
+        <button type="button" class="btn btn-sm btn-outline-danger float-right defaultButtonWidth" onclick="resetMainUI();"><i class="fa fa-undo"></i> Reset</button>
 
     </div>
     <!-- /container -->
 
+    <!-- You can also require other files to run in this process -->
+    <script src="js/renderer.js"></script>
+
 </body>
+
+<script>
+// execute on ready
+$( document ).ready(function()
+{
+    console.log( 'index.html ready' )
+    titlebarInit() // init titleBar
+
+    //$('#showSelectedSourceFolderPath').val('/home/fpoeck/Desktop/com_zimbra_uhuni_export') // show it in the UI
+    //$('#showSelectedSourceFolderPath').val('/home/fidel/Downloads') // show it in the UI
+
+    //$('#showSelectedTargetFolderPath').val('/home/fpoeck/Downloads/test_dir') // show it in the UI
+    //$('#showSelectedTargetFolderPath').val('/home/fidel/Schreibtisch/dirgister_target') // show it in the UI
+
+
+});
+</script>
+
+
+
 </html>

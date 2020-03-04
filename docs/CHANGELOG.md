@@ -26,17 +26,39 @@ The following categories are used:
 
 ***
 
-### dirgistered 0.1.1 (2019xxyy)
+### dirgistered 0.2.0 (202003yy)
 #### ```Added```
-* Added a LICENSE to project
-
+* Project
+  * Added a LICENSE to project
+* App
+  * Added a menu
+  * Added an about-window
+  * Added a button to open the generated index
+  * Added a simple intro to explain the UI
+  * Added update-search routine
+  * Added window position and size restore function
+* Index
+  * Adding bootstrap & fontawesome to html index
+  * Added a back link from html sub index files
+  * Added file icons for several file extensions
 
 ####  ```Changed```
-* Changed entire project folder structure
+* New app icon
+* Developer Console can now be triggered via shortcut and/or menu
+* Noty is now using animations (using animate.css)
+* Bootstrap is now used via NPM
+* FontAwesome is now used via NPM
 * Dependencies
-  * Updated electron from ??? to 7.0.1
-  * Updated jquery from 3.1.1 to 3.4.1
-* Moving js code to separate file
+  * Updated ```about-window``` from ```1.13.1``` to ```1.13.2```
+  * Updated ```electron``` from ```???``` to ```8.0.3```
+  * Updated ```electron-log``` from ```3.0.8``` to ```4.0.7```
+  * Updated ```electron-builder``` from ```22.1.0``` to ```22.3.6```
+  * Updated ```electron-packager``` from ```14.1.0``` to ```14.2.1```
+  * Updated ```is-online``` from ```8.2.0``` to ```8.2.1```
+  * Updated ```jquery``` from ```3.1.1``` to ```3.4.1```
+  * Updated ```eslint``` from ```6.6.0``` to ```6.8.0```
+  * Updated ```sentry``` from ```1.0.0``` to ```1.2.1```
+  * Updated ```custom-electron-titlebar``` from ```3.1.6``` to ```3.2.0```
 
 #### ```Removed```
 * Removed header

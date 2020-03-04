@@ -3,71 +3,64 @@ html {
   min-height: 100%;
 }
 
-
 body {
   padding : 10px ;
   margin-bottom: 60px;
 }
 
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-}
-
-
-/* button size */
-.custom {
-    width: 100px !important;
-}
-
-
-
-#exTab1 .tab-content {
-  color : white;
-  background-color: #428bca;
-  padding : 5px 15px;
-}
-
-#exTab2 h3 {
-  color : white;
-  background-color: #428bca;
-  padding : 5px 15px;
-}
-
-/* remove border radius for the tab */
-
-#exTab1 .nav-pills > li > a {
-  border-radius: 0;
-}
-
-/* change border radius for the tab , apply corners on top*/
-
-#exTab3 .nav-pills > li > a {
-  border-radius: 4px 4px 0 0 ;
-}
-
-#exTab3 .tab-content {
-  color : white;
-  background-color: #428bca;
-  padding : 5px 15px;
+.defaultButtonWidth{
+  width: 100px;
 }
 
 
 
 
-
-
-/*
-Checkboxes in inline forms are misaligned because for an unknow reason they inherit a height of 40px !
-This selector limit the height of inline checkboxes to 12px which is the perfect value to align them to
-the other widgets in an inline form.
-*/
-.radio-inline, .checkbox-inline {
-    max-height: 12px;
+/* ########################################################################## */
+/* UI TEXT - MAKE THEM NOT SELECTABLE */
+/* ########################################################################## */
+.dirgistered_nonSelectableText {
+    -webkit-user-select:none;
+    -moz-user-select: none;
 }
 
+
+/* ########################################################################## */
+/* WINDOW BORDER */
+/* ########################################################################## */
+.container-after-titlebar{
+    border-left: 1px solid #171717;
+    border-right: 1px solid #171717;
+    border-bottom: 1px solid #171717;
+}
+
+/* ########################################################################## */
+/* CUSTOM-TITLEBAR */
+/* ########################################################################## */
+.window-title{
+    font-size: 13px !important;
+}
+
+
+/* ########################################################################## */
+/* HEADINGS */
+/* ########################################################################## */
+h2{
+    text-align: right;
+    color: gray;
+    font-size: 24px;
+}
+
+h3{
+    text-align: right;
+    color: gray;
+    font-size: 16px;
+}
+
+
+
+/* ########################################################################## */
+/* ROW EMPTY */
+/* ########################################################################## */
+.row-empty{
+    height: 20px;
+}

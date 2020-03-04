@@ -1,13 +1,15 @@
 {
     "name": "dirgistered",
     "productName": "dirgistered",
-    "version": "0.1.1",
-    "description": "A simple directory indexer",
+    "version": "0.1.20200304",
+    "description": "A simple multi-platform directory indexer with html output",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
         "start-debug": "electron . --enable-logging",
         "test": "mocha",
+        "standardx": "standardx --verbose | snazzy",
+        "standardx-fix": "standardx --fix --verbose | snazzy",
         "lint": "node_modules/eslint/bin/eslint.js app/js --ignore-path=.eslintignore",
         "pack-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=resources/installer/icon.icns --prune=true --out=dist",
         "pack-win": "npm run pack-win-32 && npm run pack-win-64",
@@ -33,7 +35,8 @@
     "keywords": [
         "directory",
         "index",
-        "indexer"
+        "indexer",
+        "html"
     ],
     "author": "yafp <fidel@yafp.de>",
     "license": "GPL-3.0",
@@ -56,17 +59,18 @@
         "dmg": {
             "title": "dirgistered",
             "background": "resources/installer/dmg_background.png",
-            "iconSize": 128,
+            "iconSize": 80,
+            "iconTextSize": 12,
             "contents": [
                 {
-                    "x": 355,
-                    "y": 125,
+                    "x": 300,
+                    "y": 250,
                     "type": "link",
                     "path": "/Applications"
                 },
                 {
-                    "x": 155,
-                    "y": 125,
+                    "x": 300,
+                    "y": 25,
                     "type": "file"
                 }
             ]
@@ -86,18 +90,33 @@
             "artifactName": "${productName}-${version}-win-portable-${arch}.${ext}"
         },
         "nsis": {
+            "include": "resources/installer/nsis/installer.nsh",
+            "deleteAppDataOnUninstall": true,
             "unicode": false,
-            "artifactName": "${productName}-${version}-win-installer-${arch}.${ext}"
+            "artifactName": "${productName}-${version}-win-installer-${arch}.${ext}",
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "oneClick": false,
+            "allowElevation": true,
+            "allowToChangeInstallationDirectory": true,
+            "runAfterFinish": false
+        },
+        "snap": {
+            "publish": [
+            {
+                "provider": "github"
+            }
+            ]
         },
         "linux": {
             "executableName": "dirgistered",
             "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
-            "description": "a simple Electron-based directory indexer with html output",
-            "category": "Network",
+            "description": "A simple multi-platform directory indexer with html output",
+            "category": "Utility",
             "desktop": {
                 "Terminal": "false",
                 "Type": "Application",
-                "Categories": "GTK;GNOME;Network;Email;Chat;InstantMessaging;"
+                "Categories": "GTK;GNOME;Utility;"
             },
             "target": [
                 {
@@ -158,21 +177,39 @@
         ]
     },
     "devDependencies": {
-        "electron": "^7.0.1",
-        "electron-builder": "^22.1.0",
-        "electron-packager": "^14.1.0",
-        "eslint": "^6.6.0"
+        "electron": "^8.0.3",
+        "electron-builder": "^22.3.6",
+        "electron-packager": "^14.2.1",
+        "eslint": "^6.8.0",
+        "jsdoc": "^3.6.3",
+        "rimraf": "^3.0.2",
+        "snazzy": "^8.0.0",
+        "standardx": "^5.0.0"
     },
     "dependencies": {
-        "@sentry/electron": "^1.0.0",
-        "about-window": "^1.13.1",
+        "@fortawesome/fontawesome-free": "^5.12.1",
+        "@sentry/electron": "^1.2.1",
+        "about-window": "^1.13.2",
+        "animate.css": "^3.7.2",
+        "bootstrap": "^4.4.1",
+        "custom-electron-titlebar": "^3.2.0",
         "electron-is-dev": "^1.1.0",
         "electron-json-storage": "^4.1.8",
-        "electron-log": "^3.0.8",
-        "is-online": "^8.2.0",
+        "electron-log": "^4.0.7",
+        "electron-unhandled": "^3.0.2",
+        "electron-util": "^0.14.0",
+        "intro.js": "^2.9.3",
+        "is-online": "^8.2.1",
         "jquery": "^3.4.1",
         "noty": "^3.2.0-beta",
-        "pj-custom-electron-titlebar": "^3.1.6",
+        "popper.js": "^1.16.1",
+        "time-stamp": "^2.2.0",
         "v8-compile-cache": "^2.1.0"
+    },
+    "standardx": {
+        "ignore": [
+            "/dist",
+            "/test/spec.js"
+        ]
     }
 }
