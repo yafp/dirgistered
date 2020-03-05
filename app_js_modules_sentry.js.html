@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>app/js/modules/sentry.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~countEvent">countEvent</a></li><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">app/js/modules/sentry.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Contains all sentry functions
+ * @author yafp
+ * @module sentry
+ */
+'use strict'
+
+const utils = require('./utils.js')
+
+// ----------------------------------------------------------------------------
+// Error Handling using: sentry
+// ----------------------------------------------------------------------------
+//
+// https://sentry.io/organizations/yafp/
+// https://docs.sentry.io/platforms/javascript/electron/
+// https://docs.sentry.io/error-reporting/configuration/?platform=electron
+//
+const Sentry = require('@sentry/electron')
+Sentry.init({
+    dsn: 'https://b81f7bc0f9dc4c2693bca00f7b77c34d@sentry.io/3742693',
+    debug: true
+})
+//
+// simple way to force a crash:
+// myUndefinedFunctionInSentryModul();
+
+/**
+* @function enableSentry
+* @summary Enables sentry
+* @description Enabled sentry to log errors
+*/
+function enableSentry () {
+    Sentry.getCurrentHub().getClient().getOptions().enabled = true
+    utils.writeConsoleMsg('info', 'enableSentry ::: Enabled sentry')
+}
+
+/**
+* @function disableSentry
+* @summary Disables sentry
+* @description Disables sentry to log errors
+*/
+function disableSentry () {
+    Sentry.getCurrentHub().getClient().getOptions().enabled = false
+    utils.writeConsoleMsg('warn', 'disableSentry ::: Disabled sentry')
+}
+
+/**
+* @function countEvent
+* @summary Captures a message or event
+* @description Captures a message or event
+*/
+function countEvent (eventName) {
+    var isReportingEnabled = utils.globalObjectGet('enableErrorReporting')
+    if (isReportingEnabled === true) {
+        Sentry.captureMessage(eventName)
+    }
+}
+
+// ----------------------------------------------------------------------------
+// EXPORT THE MODULE FUNCTIONS
+// ----------------------------------------------------------------------------
+//
+module.exports.enableSentry = enableSentry
+module.exports.disableSentry = disableSentry
+module.exports.countEvent = countEvent
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Mar 05 2020 19:34:34 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

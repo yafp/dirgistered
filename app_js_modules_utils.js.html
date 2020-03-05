@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>app/js/modules/utils.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~countEvent">countEvent</a></li><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">app/js/modules/utils.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Contains all helper and utility functions
+ * @author yafp
+ * @module utils
+ */
+'use strict'
+
+// ----------------------------------------------------------------------------
+// REQUIRE MODULES
+// ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+// FUNCTIONS
+// ----------------------------------------------------------------------------
+
+/**
+* @function writeConsoleMsg
+* @summary Writes console output for the renderer process
+* @description Writes console output for the renderer process
+* @param {string} type - String which defines the log type
+* @param {string} message - String which defines the log message
+*/
+function writeConsoleMsg (type, message) {
+    const prefix = '[ Renderer ] '
+    const log = require('electron-log')
+    // electron-log can: error, warn, info, verbose, debug, silly
+    switch (type) {
+    case 'info':
+        log.info(prefix + message)
+        break
+
+    case 'warn':
+        log.warn(prefix + message)
+        break
+
+    case 'error':
+        log.error(prefix + message)
+        break
+
+    default:
+        log.silly(prefix + message)
+    }
+}
+
+/**
+* @function showNoty
+* @summary Shows a noty notification
+* @description Creates an in-app notification using the noty framework
+* @param {string} type - Options: alert, success, warning, error, info/information
+* @param {string} message - notification text
+* @param {number} [timeout] - Timevalue, defines how long the message should be displayed. Use 0 for no-timeout
+*/
+function showNoty (type, message, timeout = 3000) {
+    const Noty = require('noty')
+    new Noty({
+        type: type,
+        timeout: timeout,
+        theme: 'bootstrap-v4',
+        layout: 'bottom',
+        text: message,
+        animation: {
+            open: 'animated fadeIn', // Animate.css class names: default: bounceInRight
+            close: 'animated fadeOut' // Animate.css class names: default:bounceOutRight
+        }
+    }).show()
+}
+
+/**
+* @function showNotification
+* @summary Shows a desktop notification
+* @description Shows a desktop notification
+* @param {string} message - The notification message text
+* @param {string} [title] - The title of the desktop notification
+*/
+function showNotification (message, title = 'dirgistered') {
+    const myNotification = new Notification(title, {
+        body: message,
+        icon: 'img/icon/icon.png'
+    })
+
+    myNotification.onclick = () => {
+        writeConsoleMsg('info', 'showNotification ::: Notification clicked')
+    }
+}
+
+/**
+* @function openURL
+* @summary Opens an url in browser
+* @description Opens a given url in default browser. This is pretty slow, but got no better solution so far.
+* @param {string} url - URL string which contains the target url
+*/
+function openURL (url) {
+    const { shell } = require('electron')
+    writeConsoleMsg('info', 'openURL ::: Trying to open the url: _' + url + '_.')
+    shell.openExternal(url)
+}
+
+/**
+* @function generateTimestamp
+* @summary Generates a timestamp
+* @description Generates a timestamp using time-stamp
+* @return {string} - timestamp - The generates timestamp
+*/
+function generateTimestamp (pattern = 'HH:mm:ss') {
+    const timestamp = require('time-stamp')
+    // var currentTimestamp = timestamp('HH:mm:ss') // hours : minutes : seconds
+    var currentTimestamp = timestamp(pattern) // hours : minutes : seconds
+    return currentTimestamp
+}
+
+/**
+* @function createFolder
+* @summary Creates a given folder
+* @description Checks if the given path exists, otherwise it creates it
+* @param {string} folderName- The given folder path which should be created
+*/
+function createFolder (folderPath) {
+    var fs = require('fs')
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath)
+        writeConsoleMsg('info', 'createFolder ::: Created target folder: ' + folderPath)
+        return true
+    } else {
+        writeConsoleMsg('warn', 'createFolder ::: Folder: _' + folderPath + '_ already exists')
+        return false
+    }
+}
+
+/**
+* @function getFontAwesomeFileIcon
+* @summary Returns a FontAwesome iconCode
+* @description Gets a given fileextension and returns the related iconCode. This iconCode is then used in the generated output .html
+* @param {string} extension - The given extension
+* @return {string} - iconCode - The matching iconcode for the given extension
+*/
+function getFontAwesomeFileIcon (extension) {
+    var iconCode
+
+    switch (extension) {
+    // audio
+    case 'aac':
+    case 'aiff':
+    case 'flac':
+    case 'm4a':
+    case 'm4b':
+    case 'm4p':
+    case 'mp3':
+    case 'ogg':
+    case 'opus':
+    case 'wav':
+    case 'wma':
+        iconCode = '&lt;i class="fas fa-file-audio">&lt;/i>'
+        break
+
+    // archive
+    case 'zip':
+    case '7z':
+        iconCode = ' &lt;i class="fas fa-file-archive">&lt;/i>'
+        break
+
+    // code
+    case 'h': // c
+    case 'js': // javascript
+    case 'css': // css
+    case 'php': // php
+    case 'py': // phyton
+    case 'cmd': // cmd (Windows)
+    case 'bat': // batch (Windows)
+    case 'xml': // xml
+    case 'json': // json
+        iconCode = '&lt;i class="fas fa-file-code">&lt;/i>'
+        break
+
+    // csv
+    case 'csv':
+        iconCode = '&lt;i class="fas fa-file-csv">&lt;/i>'
+        break
+
+    // excel
+    case 'xls':
+    case 'xlsx':
+        iconCode = '&lt;i class="fas fa-file-excel">&lt;/i>'
+        break
+
+    // images
+    case 'bmp':
+    case 'jpg':
+    case 'jpeg':
+    case 'tiff':
+    case 'tif':
+    case 'gif':
+    case 'ico':
+    case 'psd':
+    case 'svg':
+    case 'png':
+        iconCode = '&lt;i class="fas fa-file-image">&lt;/i>'
+        break
+
+    // pdf
+    case 'pdf':
+        iconCode = '&lt;i class="fas fa-file-pdf">&lt;/i>'
+        break
+
+    // powerpoint
+    case 'ppt':
+    case 'pptx':
+        iconCode = '&lt;i class="fas fa-file-powerpoint">&lt;/i>'
+        break
+
+    // txt
+    case 'txt':
+    case 'md': // markdown
+        iconCode = '&lt;i class="fas fa-file-alt">&lt;/i>'
+        break
+
+    // video
+    case 'avi':
+    case 'mkv':
+    case 'wmv':
+    case 'mpg':
+    case 'mpeg':
+    case 'mp4':
+    case 'm4v':
+    case 'ogv':
+        iconCode = '&lt;i class="fas fa-file-video">&lt;/i>'
+        break
+
+    // word
+    case 'doc':
+    case 'docx':
+        iconCode = '&lt;i class="fas fa-file-word">&lt;/i>'
+        break
+
+    // default
+    default:
+        iconCode = '&lt;i class="fas fa-file">&lt;/i>'
+    }
+
+    return iconCode
+}
+
+// ----------------------------------------------------------------------------
+// EXPORT THE MODULE FUNCTIONS
+// ----------------------------------------------------------------------------
+//
+module.exports.writeConsoleMsg = writeConsoleMsg
+module.exports.showNoty = showNoty
+module.exports.showNotification = showNotification
+module.exports.openURL = openURL
+module.exports.generateTimestamp = generateTimestamp
+module.exports.createFolder = createFolder
+module.exports.getFontAwesomeFileIcon = getFontAwesomeFileIcon
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Mar 05 2020 19:34:34 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
