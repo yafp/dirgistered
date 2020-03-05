@@ -44,7 +44,22 @@ If you want to support the development of **media-dupes** you can fund me on:
 * [patreon](https://www.patreon.com/yafp)
 
 
+## developers
+
+You are always welcome to check and even improve the code.
+
+### contributing
+...
+
+### jsdoc
+
+The current jsdoc documentation can be found on https://yafp.github.io/dirgistered/. It is auto-generated (using JsDoc Action) on each commit of this project.
+build
+
+### build
+....
+
+
 ## credits
 ### icon
 * Application icon made by [srip](https://www.flaticon.com/authors/srip) from [https://www.flaticon.com/](www.flaticon.com). [Link](https://www.flaticon.com/free-icon/file-system_2345412?term=directory&page=1&position=24)
- 
