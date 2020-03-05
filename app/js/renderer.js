@@ -45,8 +45,8 @@ function titlebarInit () {
 
 /**
 * @function uiSelectSource
-* @summary
-* @description
+* @summary selects a source folder
+* @description selects a source folder
 * @memberof renderer
 */
 function uiSelectSource () {
@@ -73,8 +73,8 @@ function uiSelectSource () {
 
 /**
 * @function uiSelectTarget
-* @summary
-* @description
+* @summary selects a target folder
+* @description selects a target folder
 * @memberof renderer
 */
 function uiSelectTarget () {
@@ -101,8 +101,8 @@ function uiSelectTarget () {
 
 /**
 * @function updateUILog
-* @summary
-* @description
+* @summary updates the UI log
+* @description updates the UI log
 * @memberof renderer
 */
 function updateUILog (logText) {
