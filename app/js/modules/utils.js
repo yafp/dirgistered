@@ -8,8 +8,10 @@
 // ----------------------------------------------------------------------------
 // REQUIRE MODULES
 // ----------------------------------------------------------------------------
-//
-const sentry = require('./sentry.js')
+
+// ----------------------------------------------------------------------------
+// FUNCTIONS
+// ----------------------------------------------------------------------------
 
 /**
 * @function writeConsoleMsg
@@ -70,10 +72,10 @@ function showNoty (type, message, timeout = 3000) {
 * @param {string} message - The notification message text
 * @param {string} [title] - The title of the desktop notification
 */
-function showNotification (message, title = 'media-dupes') {
+function showNotification (message, title = 'dirgistered') {
     const myNotification = new Notification(title, {
         body: message,
-        icon: 'img/notification/icon.png'
+        icon: 'img/icon/icon.png'
     })
 
     myNotification.onclick = () => {
@@ -106,33 +108,66 @@ function generateTimestamp (pattern = 'HH:mm:ss') {
     return currentTimestamp
 }
 
-function createFolder (folderName) {
+/**
+* @function createFolder
+* @summary Creates a given folder
+* @description Checks if the given path exists, otherwise it creates it
+* @param {string} folderName- The given folder path which should be created
+*/
+function createFolder (folderPath) {
     var fs = require('fs')
-    if (!fs.existsSync(folderName)) {
-        fs.mkdirSync(folderName)
-        writeConsoleMsg('info', 'createFolder ::: Created target folder: ' + folderName)
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath)
+        writeConsoleMsg('info', 'createFolder ::: Created target folder: ' + folderPath)
         return true
     } else {
-        writeConsoleMsg('warn', 'createFolder ::: Folder: _' + folderName + '_ already exists')
+        writeConsoleMsg('warn', 'createFolder ::: Folder: _' + folderPath + '_ already exists')
         return false
     }
 }
 
+/**
+* @function getFontAwesomeFileIcon
+* @summary Returns a FontAwesome iconCode
+* @description Gets a given fileextension and returns the related iconCode. This iconCode is then used in the generated output .html
+* @param {string} extension - The given extension
+* @return {string} - iconCode - The matching iconcode for the given extension
+*/
 function getFontAwesomeFileIcon (extension) {
-    // random:      <i class="fas fa-file"></i>
-    // alt???       <i class="fas fa-file-alt"></i>
-
     var iconCode
 
     switch (extension) {
     // audio
+    case 'aac':
+    case 'aiff':
+    case 'flac':
+    case 'm4a':
+    case 'm4b':
+    case 'm4p':
     case 'mp3':
+    case 'ogg':
+    case 'opus':
     case 'wav':
+    case 'wma':
         iconCode = '<i class="fas fa-file-audio"></i>'
         break
 
+    // archive
+    case 'zip':
+    case '7z':
+        iconCode = ' <i class="fas fa-file-archive"></i>'
+        break
+
     // code
-    case 'h':
+    case 'h': // c
+    case 'js': // javascript
+    case 'css': // css
+    case 'php': // php
+    case 'py': // phyton
+    case 'cmd': // cmd (Windows)
+    case 'bat': // batch (Windows)
+    case 'xml': // xml
+    case 'json': // json
         iconCode = '<i class="fas fa-file-code"></i>'
         break
 
@@ -147,22 +182,18 @@ function getFontAwesomeFileIcon (extension) {
         iconCode = '<i class="fas fa-file-excel"></i>'
         break
 
-    // powerpoint
-    case 'ppt':
-    case 'pptx':
-        iconCode = '<i class="fas fa-file-powerpoint"></i>'
-        break
-
     // images
+    case 'bmp':
     case 'jpg':
+    case 'jpeg':
+    case 'tiff':
+    case 'tif':
+    case 'gif':
+    case 'ico':
+    case 'psd':
+    case 'svg':
     case 'png':
         iconCode = '<i class="fas fa-file-image"></i>'
-        break
-
-    // video
-    case 'avi':
-    case 'mpg':
-        iconCode = '<i class="fas fa-file-video"></i>'
         break
 
     // pdf
@@ -170,16 +201,34 @@ function getFontAwesomeFileIcon (extension) {
         iconCode = '<i class="fas fa-file-pdf"></i>'
         break
 
+    // powerpoint
+    case 'ppt':
+    case 'pptx':
+        iconCode = '<i class="fas fa-file-powerpoint"></i>'
+        break
+
+    // txt
+    case 'txt':
+    case 'md': // markdown
+        iconCode = '<i class="fas fa-file-alt"></i>'
+        break
+
+    // video
+    case 'avi':
+    case 'mkv':
+    case 'wmv':
+    case 'mpg':
+    case 'mpeg':
+    case 'mp4':
+    case 'm4v':
+    case 'ogv':
+        iconCode = '<i class="fas fa-file-video"></i>'
+        break
+
     // word
     case 'doc':
     case 'docx':
         iconCode = '<i class="fas fa-file-word"></i>'
-        break
-
-    // archive
-    case 'zip':
-    case '7z':
-        iconCode = ' <i class="fas fa-file-archive"></i>'
         break
 
     // default

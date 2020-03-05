@@ -10,7 +10,14 @@ require('v8-compile-cache')
 // ----------------------------------------------------------------------------
 const utils = require('./js/modules/utils.js')
 
+// ----------------------------------------------------------------------------
+// VARIABLES
+// ----------------------------------------------------------------------------
 var currentOutputPath = ''
+
+// ----------------------------------------------------------------------------
+// FUNCTIONS
+// ----------------------------------------------------------------------------
 
 /**
 * @function titlebarInit
@@ -48,7 +55,7 @@ function uiSelectSource () {
 
     utils.writeConsoleMsg('info', 'uiSelectSource ::: User wants to set a source directory. Now opening dialog to select a new source dir')
     dialog.showOpenDialog(options).then(res => {
-        utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
+        //utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
 
         if (res.filePaths.length === 0) {
             utils.writeConsoleMsg('warn', 'uiSelectSource ::: User aborted selecting a source dir')
@@ -76,7 +83,7 @@ function uiSelectTarget () {
 
     utils.writeConsoleMsg('info', 'uiSelectTarget ::: User wants to set a source directory. Now opening dialog to select a new target dir')
     dialog.showOpenDialog(options).then(res => {
-        utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
+        //utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
 
         if (res.filePaths.length === 0) {
             utils.writeConsoleMsg('warn', 'uiSelectTarget ::: User aborted selecting a target dir')
@@ -100,7 +107,7 @@ function uiSelectTarget () {
 */
 function updateUILog (logText) {
     var timestamp = utils.generateTimestamp()
-    $('#ta_log').val($('#ta_log').val() + timestamp + ' ' + logText + '\n')
+    $('#ta_log').val($('#ta_log').val() + timestamp + ' | ' + logText + '\n')
     logScrollToEnd()
 }
 
@@ -157,11 +164,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
         currentOutputPath = targetFolderPath
     }
 
-    // updateUILog('Indexing: "' + sourceFolderPath + '"')
-
-    // create target folder if it doesnt exists yet
-    utils.createFolder(targetFolderPath)
-    updateUILog('Created folder: "' + targetFolderPath + '"') // not visible until the end
+    utils.createFolder(targetFolderPath) // create target folder if it doesnt exists yet
 
     var moveFrom = sourceFolderPath
     var moveTo = targetFolderPath
@@ -174,12 +177,12 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     var fileNameArray = []
     var fileFullPathArray = []
 
-    var i
+    var i // used for loops
 
     // sync (async might be much better ... should check that)
     var filenames = fs.readdirSync(moveFrom)
     for (i = 0; i < filenames.length; i++) {
-        var stats = fs.statSync(moveFrom + '/' + filenames[i])
+        var stats = fs.statSync(path.join(moveFrom, filenames[i]))
         var fromPath = path.join(moveFrom, filenames[i])
 
         // Store all directory informations in arrays
@@ -188,7 +191,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
             dirFullPathArray.push(fromPath) // store entire path
 
             // store folder name itself
-            var folderName = fromPath.substr(fromPath.lastIndexOf('/') + 1)
+            var folderName = path.basename(fromPath)
             dirNameArray.push(folderName)
 
             utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Found a subdir: ' + folderName)
@@ -200,29 +203,17 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
             fileFullPathArray.push(fromPath) // store entire path
 
             // store file name itself
-            var curFileName = fromPath.substr(fromPath.lastIndexOf('/') + 1)
+            var curFileName = path.basename(fromPath)
             fileNameArray.push(curFileName)
         }
     }
 
     // generate index.html in target dir
-    var fileName = targetFolderPath + '/index.html' // FIXME - not windows ready
+    var fileName = path.join(targetFolderPath, 'index.html')
+
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current output file is: _' + fileName + '_.')
 
-    /*
-    var content = '<html>\n \
-    <head> \
-    <title>dirgistered</title> \
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script> \
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> \
-    </head> \
-    <body> \
-    <div class="container-fluid"> \
-    <nav class="navbar navbar-light bg-light"> \
-    <span class="navbar-brand mb-0 h1">Source: <span class="badge badge-secondary">' + sourceFolderPath + '</span> <small> generated using <a href="https://github.com/yafp/dirgistered">dirgistered</a></small></span> \
-    </nav>'
-    */
-
+    // html content
     var content = ''
     content += '<html>\n'
     content += '<head>\n'
@@ -236,9 +227,10 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     content += '<span class="navbar-brand mb-0 h1">Source: <span class="badge badge-secondary">' + sourceFolderPath + '</span> <small> generated using <a href="https://github.com/yafp/dirgistered">dirgistered</a></small></span>\n'
     content += '</nav>\n'
 
-    // add a backlink
+    // add a back button if needed
     if (initialRun === false) {
-        content = content + "<a href='../index.html'>Back</a>"
+        content = content + '<a class="btn btn-sm btn-outline-secondary" href="../index.html"><i class="fas fa-backward" aria-hidden="true"></i> Back</a><br>'
+        // content = content + '<button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-folder-open" aria-hidden="true"></i> BACK</button>'
     }
 
     fs.writeFile(fileName, content, function (err) {
@@ -288,45 +280,64 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     }
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished index creation for _' + sourceFolderPath + '_. checking sub-dirs now.')
-    updateUILog('Indexed: "' + sourceFolderPath + '"') // update UI
+    updateUILog('Finished indexing directory: "' + sourceFolderPath + '"') // update UI
 
     // start indexing for each subdir
     for (var j = 0; j < dirFullPathArray.length; j++) {
-        createSingleHTMLIndex(dirFullPathArray[j], targetFolderPath + '/' + dirNameArray[j], false)
+        createSingleHTMLIndex(dirFullPathArray[j], targetFolderPath + '/' + dirNameArray[j], false) // FIXME
     }
 }
 
+/**
+* @function startIndexing
+* @summary Starts the indexing process
+* @description Starts the indexing process
+* @memberof renderer
+*/
 function startIndexing () {
+    var fs = require('fs')
+    var path = require('path')
+
     utils.writeConsoleMsg('info', 'startIndexing ::: Starting')
 
-    loadingAnimationShow()
-
-    var fs = require('fs')
+    loadingAnimationShow() // start spinner
 
     $('#button_startIndexing').prop('disabled', true) // disable the start button
 
+    // get source
     var sourceFolderPath = $('#showSelectedSourceFolderPath').val()
     utils.writeConsoleMsg('info', 'startIndexing ::: Source is set to: ' + sourceFolderPath)
 
+    // get target
     var targetFolderPath = $('#showSelectedTargetFolderPath').val()
     utils.writeConsoleMsg('info', 'startIndexing ::: Target is set to:' + targetFolderPath)
 
     // make new date based folder in target
     var timestamp = utils.generateTimestamp('YYYYMMDD-HHmmss')
-    targetFolderPath = targetFolderPath + '/' + timestamp + '---dirgistered-Index' // fixme - not windows-ready
+    targetFolderPath = path.join(targetFolderPath, timestamp + '---dirgistered-Index')
 
     if (utils.createFolder(targetFolderPath)) {
-        updateUILog('Target folder: "' + targetFolderPath + '"')
+        updateUILog('Created date-based target folder: "' + targetFolderPath + '"')
+        updateUILog('Starting indexing process ...')
         createSingleHTMLIndex(sourceFolderPath, targetFolderPath, true) // Start html generation madness
     }
 
-    utils.writeConsoleMsg('info', 'Finished index process')
-    utils.showNoty('success', 'Finished entire indexing process')
-    loadingAnimationHide()
+    var finalMessage = 'Finished entire index process'
+
+    utils.writeConsoleMsg('info', finalMessage)
+    utils.showNoty('success', finalMessage)
+    updateUILog(finalMessage) // update UI log
+    loadingAnimationHide() // hide spinner
 
     $('#button_openIndex').prop('disabled', false) // enable the showIndex button
 }
 
+/**
+* @function validateSourceAndTarget
+* @summary Checks if both source and target folder are set and enables the startIndex button
+* @description Is executed when either the source or target folder is configured
+* @memberof renderer
+*/
 function validateSourceAndTarget () {
     utils.writeConsoleMsg('info', 'validateSourceAndTarget ::: Trying to validate the source and target situation')
 
@@ -509,7 +520,7 @@ function searchUpdate (silent = true) {
 
         .always(function () {
             utils.writeConsoleMsg('info', 'searchUpdate ::: Finished checking ' + urlGithubApiReleases + ' for available releases')
-            loadingAnimationShow()
+            loadingAnimationHide()
         })
 }
 

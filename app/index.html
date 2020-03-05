@@ -87,20 +87,20 @@
         </div>
 
         <!-- start -->
-        <button type="button" id="button_startIndexing" class="btn btn-primary defaultButtonWidth" onclick="startIndexing();" disabled data-step="4" data-intro="Finally start the indexing using this button"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
+        <button type="button" id="button_startIndexing" class="btn btn-primary defaultButtonWidth" onclick="startIndexing();" disabled data-step="4" data-intro="Finally start the indexing using this button" data-toggle="tooltip" data-placement="top" title="Starts the index generation"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
 
         <!-- empty line -->
         <div class="row-fluid row-empty">&nbsp;</div>
 
         <!-- log -->
         <div class="form-group">
-            <textarea class="form-control" rows="10" id="ta_log" disabled="disabled" placeholder="Log"></textarea>
+            <textarea class="form-control" rows="10" id="ta_log" disabled="disabled" placeholder="Log" data-step="5" data-intro="The indexing process outputs some basic informations here"></textarea>
         </div>
 
         <!-- other buttons -->
-        <button type="button" id="button_openIndex" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="openIndex();" disabled><i class="fas fa-folder-open" aria-hidden="true"></i> Open</button>
-        <button type="button" id="button_startIntro" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="startIntro();"><i class="fas fa-info-circle" aria-hidden="true"></i> Intro</button>
-        <button type="button" class="btn btn-sm btn-outline-danger float-right defaultButtonWidth" onclick="resetMainUI();"><i class="fa fa-undo"></i> Reset</button>
+        <button type="button" id="button_openIndex" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="openIndex();" disabled data-toggle="tooltip" data-placement="top" title="Opens the folder containing the generated index files" data-step="6" data-intro="This button gives access to the generated index files"><i class="fas fa-folder-open" aria-hidden="true"></i> Open</button>
+        <button type="button" id="button_startIntro" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="startIntro();" data-toggle="tooltip" data-placement="top" title="Shows an Intro about dirgistered"><i class="fas fa-info-circle" aria-hidden="true"></i> Intro</button>
+        <button type="button" class="btn btn-sm btn-outline-danger float-right defaultButtonWidth" onclick="resetMainUI();" data-toggle="tooltip" data-placement="top" title="Resets the User-Interface" data-step="7" data-intro="This button resets the User Interace "><i class="fa fa-undo"></i> Reset</button>
 
     </div>
     <!-- /container -->
@@ -126,7 +126,5 @@ $( document ).ready(function()
 
 });
 </script>
-
-
 
 </html>

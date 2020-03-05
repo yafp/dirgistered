@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/logo/128x128.png)
+![logo](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/logo/128x128.png)
 
 # dirgistered
 ## changelog
@@ -67,6 +67,7 @@ The following categories are used:
 
 ***
 
-### dirgistered 0.1.0 (2017xxyy)
+### dirgistered 0.1.0 (20170117)
 #### ```Added```
 * First version of this project
+* no executables so far

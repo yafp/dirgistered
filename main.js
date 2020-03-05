@@ -1,11 +1,11 @@
 /**
-* @file Contains the main.js code of media-dupes
+* @file Contains the main.js code of dirgistered
 * @author yafp
 * @namespace main
 */
 
 // ----------------------------------------------------------------------------
-// REQUIRE: MEDIA-DUPES MODULES
+// REQUIRE: DIRGISTERED MODULES
 // ----------------------------------------------------------------------------
 const crash = require('./app/js/modules/crashReporter.js') // crashReporter
 const sentry = require('./app/js/modules/sentry.js') // sentry
@@ -147,7 +147,7 @@ function createWindowMain () {
 
     // Restore window position if possible
     //
-    // requirements: found values in MediaDupesWindowPosSize.json from the previous session
+    // requirements: found values in DirgisteredWindowPosSize.json from the previous session
     if ((typeof windowPositionX !== 'undefined') && (typeof windowPositionY !== 'undefined')) {
         mainWindow.setPosition(windowPositionX, windowPositionY)
     }
@@ -179,18 +179,7 @@ function createWindowMain () {
         doLog('info', 'createWindowMain ::: mainWindow is now ready, so show it and then focus it (event: ready-to-show)')
         mainWindow.show()
         mainWindow.focus()
-
-        mainWindow.webContents.send('startSearchUpdatesSilent') // search silently for media-dupes updates
-
-        /*
-        mainWindow.webContents.send('blurMainUI') // blur the main UI
-
-        // do some checks & routines once at start of the application
-        //
-        // mainWindow.webContents.send('startSearchUpdatesSilent') // search silently for media-dupes updates
-        //mainWindow.webContents.send('unblurMainUI') // unblur the main UI
-
-        */
+        mainWindow.webContents.send('startSearchUpdatesSilent') // search silently for dirgistered updates
     })
 
     // Emitted before the window is closed.
@@ -467,7 +456,7 @@ function createMenuMain () {
 */
 function forceSingleAppInstance () {
     if (!gotTheLock) {
-        doLog('warn', 'forceSingleAppInstance ::: There is already another instance of media-dupes')
+        doLog('warn', 'forceSingleAppInstance ::: There is already another instance of dirgistered')
         app.quit() // quit the second instance
     } else {
         app.on('second-instance', (event, commandLine, workingDirectory) => {

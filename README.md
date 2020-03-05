@@ -17,8 +17,10 @@ available for:
 
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest.png)
 
+</div>
 
-## about dirgistered
+
+## about
 * scans a source directory
 * generates a browseable html output in a target directory
 
@@ -42,5 +44,7 @@ If you want to support the development of **media-dupes** you can fund me on:
 * [patreon](https://www.patreon.com/yafp)
 
 
-## icon
-* https://www.flaticon.com/free-icon/file-system_2345412?term=directory&page=1&position=24
+## credits
+### icon
+* Application icon made by [srip](https://www.flaticon.com/authors/srip) from [https://www.flaticon.com/](www.flaticon.com). [Link](https://www.flaticon.com/free-icon/file-system_2345412?term=directory&page=1&position=24)
+ 
