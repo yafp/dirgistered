@@ -16,10 +16,8 @@ const utils = require('./utils.js')
 // https://docs.sentry.io/error-reporting/configuration/?platform=electron
 //
 const Sentry = require('@sentry/electron')
-// const process = require('process')
 Sentry.init({
-    // release: 'media-dupes@' + process.env.npm_package_version,
-    dsn: 'https://4bd3f512a1e34e24ab9838b00f57d131@sentry.io/1847606',
+    dsn: 'https://b81f7bc0f9dc4c2693bca00f7b77c34d@sentry.io/3742693',
     debug: true
 })
 //
