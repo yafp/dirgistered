@@ -52,7 +52,7 @@ The following categories are used:
   * Updated ```about-window``` from ```1.13.1``` to ```1.13.2```
   * Updated ```electron``` from ```???``` to ```8.0.3```
   * Updated ```electron-log``` from ```3.0.8``` to ```4.0.7```
-  * Updated ```electron-builder``` from ```22.1.0``` to ```22.3.6```
+  * Updated ```electron-builder``` from ```22.1.0``` to ```22.4.0```
   * Updated ```electron-packager``` from ```14.1.0``` to ```14.2.1```
   * Updated ```is-online``` from ```8.2.0``` to ```8.2.1```
   * Updated ```jquery``` from ```3.1.1``` to ```3.4.1```

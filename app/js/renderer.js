@@ -65,10 +65,9 @@ function uiSelectSource () {
             updateUILog('Set source dir to: ' + newDownloadDirectory)
             $('#showSelectedSourceFolderPath').val(newDownloadDirectory) // show it in the UI
             utils.writeConsoleMsg('info', 'uiSelectSource ::: User selected the following source dir: _' + newDownloadDirectory + '_.')
+            validateSourceAndTarget()
         }
     })
-
-    validateSourceAndTarget()
 }
 
 /**
@@ -93,10 +92,9 @@ function uiSelectTarget () {
             updateUILog('Set target dir to: ' + newDownloadDirectory)
             $('#showSelectedTargetFolderPath').val(newDownloadDirectory) // show it in the UI
             utils.writeConsoleMsg('info', 'uiSelectTarget ::: User selected the following target dir: _' + newDownloadDirectory + '_.')
+            validateSourceAndTarget()
         }
     })
-
-    validateSourceAndTarget()
 }
 
 /**
@@ -278,6 +276,16 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
             }
         })
     }
+
+    // Section Footer
+    //
+    var indexFooter = '<br><br>'
+    // append text to index file
+    fs.appendFile(fileName, indexFooter, function (err) {
+        if (err) {
+            utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the footer section to the .html file.')
+        }
+    })
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished index creation for _' + sourceFolderPath + '_. checking sub-dirs now.')
     updateUILog('Finished indexing directory: "' + sourceFolderPath + '"') // update UI
