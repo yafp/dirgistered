@@ -1,7 +1,7 @@
 {
     "name": "dirgistered",
     "productName": "dirgistered",
-    "version": "0.1.20200305",
+    "version": "0.1.20200306",
     "description": "A simple multi-platform directory indexer with html output",
     "main": "main.js",
     "scripts": {
@@ -103,9 +103,9 @@
         },
         "snap": {
             "publish": [
-            {
-                "provider": "github"
-            }
+                {
+                    "provider": "github"
+                }
             ]
         },
         "linux": {
@@ -178,7 +178,7 @@
     },
     "devDependencies": {
         "electron": "^8.0.3",
-        "electron-builder": "^22.3.6",
+        "electron-builder": "^22.4.0",
         "electron-packager": "^14.2.1",
         "eslint": "^6.8.0",
         "jsdoc": "^3.6.3",
