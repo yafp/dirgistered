@@ -50,7 +50,7 @@ The following categories are used:
 * FontAwesome is now used via NPM
 * Dependencies
   * Updated ```about-window``` from ```1.13.1``` to ```1.13.2```
-  * Updated ```electron``` from ```???``` to ```8.0.3```
+  * Updated ```electron``` from ```???``` to ```8.1.0```
   * Updated ```electron-log``` from ```3.0.8``` to ```4.0.7```
   * Updated ```electron-builder``` from ```22.1.0``` to ```22.4.0```
   * Updated ```electron-packager``` from ```14.1.0``` to ```14.2.1```
