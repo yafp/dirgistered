@@ -21,6 +21,9 @@ available for:
 
 
 ## about
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e8bdbae8676e4c4e9699253de0d0af3d)](https://app.codacy.com/manual/yafp/dirgistered?utm_source=github.com&utm_medium=referral&utm_content=yafp/dirgistered&utm_campaign=Badge_Grade_Dashboard)
+
 * scans a source directory
 * generates a browseable html output in a target directory
 
