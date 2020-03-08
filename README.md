@@ -14,6 +14,11 @@ available for:
 ![windows](https://raw.githubusercontent.com/yafp/media-dupes/master/.github/images/platform/windows_32x32.png)
 
 ![GitHub License](https://img.shields.io/github/license/yafp/dirgistered.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85d982224c5c463098dc6eea410fcccf)](https://www.codacy.com/manual/yafp/dirgistered?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yafp/dirgistered&amp;utm_campaign=Badge_Grade)
+![npm audit](https://github.com/yafp/dirgistered/workflows/npm%20audit/badge.svg)
+![GitHub Current Release](https://img.shields.io/github/release/yafp/dirgistered.svg?style=flat)
+![GitHub Release Date](https://img.shields.io/github/release-date/yafp/dirgistered.svg?style=flat)
+[![jsDoc](https://github.com/yafp/dirgistered/workflows/GitHub%20pages/badge.svg)](https://yafp.github.io/dirgistered/)
 
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest.png)
 
