@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~countEvent">countEvent</a></li><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li></ul>
 </nav>
 
 <div id="main">
@@ -53,6 +53,18 @@ require('v8-compile-cache')
 // IMPORT DIRGISTERED MODULES
 // ----------------------------------------------------------------------------
 const utils = require('./js/modules/utils.js')
+const sentry = require('./js/modules/sentry.js')
+const crash = require('./js/modules/crashReporter.js') // crashReporter
+const unhandled = require('./js/modules/unhandled.js') // electron-unhandled
+
+
+// ----------------------------------------------------------------------------
+// ERROR HANDLING
+// ----------------------------------------------------------------------------
+crash.initCrashReporter()
+unhandled.initUnhandled()
+//sentry.enableSentry() // sentry is enabled by default
+
 
 // ----------------------------------------------------------------------------
 // VARIABLES
@@ -99,7 +111,7 @@ function uiSelectSource () {
 
     utils.writeConsoleMsg('info', 'uiSelectSource ::: User wants to set a source directory. Now opening dialog to select a new source dir')
     dialog.showOpenDialog(options).then(res => {
-        //utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
+        // utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
 
         if (res.filePaths.length === 0) {
             utils.writeConsoleMsg('warn', 'uiSelectSource ::: User aborted selecting a source dir')
@@ -126,7 +138,7 @@ function uiSelectTarget () {
 
     utils.writeConsoleMsg('info', 'uiSelectTarget ::: User wants to set a source directory. Now opening dialog to select a new target dir')
     dialog.showOpenDialog(options).then(res => {
-        //utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
+        // utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
 
         if (res.filePaths.length === 0) {
             utils.writeConsoleMsg('warn', 'uiSelectTarget ::: User aborted selecting a target dir')
@@ -236,6 +248,9 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
             var folderName = path.basename(fromPath)
             dirNameArray.push(folderName)
 
+            // size (File Size in Bytes)
+            // console.error(stats.size) // #5
+
             utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Found a subdir: ' + folderName)
         }
 
@@ -243,6 +258,9 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
         //
         if (stats.isFile()) {
             fileFullPathArray.push(fromPath) // store entire path
+
+            // size:
+            // console.warn(stats.size) // #5
 
             // store file name itself
             var curFileName = path.basename(fromPath)
@@ -252,7 +270,6 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
 
     // generate index.html in target dir
     var fileName = path.join(targetFolderPath, 'index.html')
-
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current output file is: _' + fileName + '_.')
 
     // html content
@@ -262,22 +279,25 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     content += '&lt;title>dirgistered&lt;/title>\n'
     content += '&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous">&lt;/script>\n'
     content += '&lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">\n'
+    // https://cdn.datatables.net/
+    //content += '&lt;script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">&lt;/script>\n'
+    //content += '&lt;link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">\n'
     content += '&lt;/head>\n'
     content += '&lt;body>\n'
     content += '&lt;div class="container-fluid">\n'
     content += '&lt;nav class="navbar navbar-light bg-light">\n'
-    content += '&lt;span class="navbar-brand mb-0 h1">Source: &lt;span class="badge badge-secondary">' + sourceFolderPath + '&lt;/span> &lt;small> generated using &lt;a href="https://github.com/yafp/dirgistered">dirgistered&lt;/a>&lt;/small>&lt;/span>\n'
+    content += '&lt;span class="navbar-brand mb-0 h1">Source: &lt;span class="badge badge-secondary">' + sourceFolderPath + '&lt;/span> &lt;small> generated using &lt;a href="https://github.com/yafp/dirgistered">dirgistered&lt;/a>.&lt;/small>&lt;/span>\n'
     content += '&lt;/nav>\n'
 
     // add a back button if needed
     if (initialRun === false) {
         content = content + '&lt;a class="btn btn-sm btn-outline-secondary" href="../index.html">&lt;i class="fas fa-backward" aria-hidden="true">&lt;/i> Back&lt;/a>&lt;br>'
-        // content = content + '&lt;button type="button" class="btn btn-sm btn-outline-secondary">&lt;i class="fas fa-folder-open" aria-hidden="true">&lt;/i> BACK&lt;/button>'
     }
 
     fs.writeFile(fileName, content, function (err) {
         if (err) {
             utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: An error ocurred creating the file _' + err.message + '_')
+            utils.showNoty('error', 'Error occured while creating an index file. Error: ' + err.message)
         }
 
         utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Created single index for: ' + sourceFolderPath + '.')
@@ -285,54 +305,40 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished reading directory')
 
+    var bodyFolderText
+    var bodyFilesText
+    var indexFooter = '&lt;br>&lt;br>'
+
     // Section: Folders
     //
     if (dirNameArray.length > 0) {
         // build text
-        var bodyFolderText = '&lt;br>&lt;h5>&lt;i class="fas fa-folder">&lt;/i> Folders (' + dirNameArray.length + ')&lt;/h5>&lt;hr>'
+        bodyFolderText = '&lt;br>&lt;h5>&lt;i class="fas fa-folder">&lt;/i> Folders (' + dirNameArray.length + ')&lt;/h5>&lt;hr>'
         for (i = 0; i &lt; dirNameArray.length; i++) {
             bodyFolderText += '&lt;a href="' + dirNameArray[i] + '/index.html">' + dirNameArray[i] + '&lt;/a>&lt;br>'
         }
-
-        // append text to index file
-        fs.appendFile(fileName, bodyFolderText, function (err) {
-            if (err) {
-                utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the folder section to the .html file.')
-            }
-        })
     }
 
     // Section: Files
     //
     if (fileNameArray.length > 0) {
         // build text
-        var bodyFilesText = '&lt;br>&lt;h5>&lt;i class="fas fa-file">&lt;/i> Files (' + fileNameArray.length + ')&lt;/h5>&lt;hr>'
+        bodyFilesText = '&lt;br>&lt;h5>&lt;i class="fas fa-file">&lt;/i> Files (' + fileNameArray.length + ')&lt;/h5>&lt;hr>'
         for (i = 0; i &lt; fileNameArray.length; i++) {
             var extension = fileNameArray[i].split('.').pop()
             var iconCode = utils.getFontAwesomeFileIcon(extension)
             bodyFilesText += iconCode + ' ' + fileNameArray[i] + '&lt;br>'
         }
-
-        // append text to index file
-        fs.appendFile(fileName, bodyFilesText, function (err) {
-            if (err) {
-                utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the files section to the .html file.')
-            }
-        })
     }
 
-    // Section Footer
+    // Append generated text-variables to index / output file
     //
-    var indexFooter = '&lt;br>&lt;br>'
-    // append text to index file
-    fs.appendFile(fileName, indexFooter, function (err) {
-        if (err) {
-            utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the footer section to the .html file.')
-        }
-    })
+    utils.appendToFile(fileName, bodyFolderText) // append to file
+    utils.appendToFile(fileName, bodyFilesText) // append to file
+    utils.appendToFile(fileName, indexFooter) // append to file
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished index creation for _' + sourceFolderPath + '_. checking sub-dirs now.')
-    updateUILog('Finished indexing directory: "' + sourceFolderPath + '"') // update UI
+    updateUILog('Indexed directory: "' + sourceFolderPath + '"') // update UI
 
     // start indexing for each subdir
     for (var j = 0; j &lt; dirFullPathArray.length; j++) {
@@ -378,6 +384,7 @@ function startIndexing () {
 
     utils.writeConsoleMsg('info', finalMessage)
     utils.showNoty('success', finalMessage)
+    utils.showNotification(finalMessage)
     updateUILog(finalMessage) // update UI log
     loadingAnimationHide() // hide spinner
 
@@ -395,9 +402,11 @@ function validateSourceAndTarget () {
 
     var misconfigurationDetected = false
 
+    // source
     var sourceFolderPath = $('#showSelectedSourceFolderPath').val()
     utils.writeConsoleMsg('info', 'validateSourceAndTarget ::: Source is set to: ' + sourceFolderPath)
 
+    // target
     var targetFolderPath = $('#showSelectedTargetFolderPath').val()
     utils.writeConsoleMsg('info', 'validateSourceAndTarget ::: Target is set to: ' + targetFolderPath)
 
@@ -627,7 +636,6 @@ function loadingAnimationHide () {
 * @description Called via ipc from main.js on-ready to start the search for media-dupes updates
 * @memberof renderer
 */
-
 require('electron').ipcRenderer.on('startSearchUpdatesSilent', function () {
     searchUpdate(true) // If silent = false -> Forces result feedback, even if no update is available
 })
@@ -655,7 +663,7 @@ require('electron').ipcRenderer.on('startSearchUpdatesVerbose', function () {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Mar 08 2020 21:38:46 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 09 2020 18:11:51 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

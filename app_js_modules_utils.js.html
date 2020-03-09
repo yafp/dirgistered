@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~countEvent">countEvent</a></li><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li></ul>
 </nav>
 
 <div id="main">
@@ -283,6 +283,40 @@ function getFontAwesomeFileIcon (extension) {
     return iconCode
 }
 
+/**
+* @function appendToFile
+* @summary Appends text to a given filePath
+* @description Appends text to a given filePath
+* @param {string} filePath - The path to the file which the text should be appended to
+* @param {string} textToAppend - The actual text which should be appended
+*/
+function appendToFile (filePath, textToAppend) {
+    var fs = require('fs')
+
+    fs.appendFile(filePath, textToAppend, function (err) {
+        if (err) {
+            writeConsoleMsg('error', 'appendToFile ::: Failed to append text to the .html file (' + filePath + ').')
+            showNoty('error', 'Error occured while trying to append text to an index file. Error: ' + err)
+        }
+    })
+}
+
+/**
+* @function bytesToSize
+* @summary Calculates bytes to size
+* @description Calculates bytes to size
+* @param {string} bytes - The given amount of bytes
+* @return The actual size
+*/
+function bytesToSize (bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    if (bytes === 0) return 'n/a'
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+    if (i === 0) return `${bytes} ${sizes[i]})`
+    return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
+}
+// source: https://gist.github.com/lanqy/5193417 and variations
+
 // ----------------------------------------------------------------------------
 // EXPORT THE MODULE FUNCTIONS
 // ----------------------------------------------------------------------------
@@ -294,6 +328,8 @@ module.exports.openURL = openURL
 module.exports.generateTimestamp = generateTimestamp
 module.exports.createFolder = createFolder
 module.exports.getFontAwesomeFileIcon = getFontAwesomeFileIcon
+module.exports.appendToFile = appendToFile
+module.exports.bytesToSize = bytesToSize
 </code></pre>
         </article>
     </section>
@@ -308,7 +344,7 @@ module.exports.getFontAwesomeFileIcon = getFontAwesomeFileIcon
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Mar 08 2020 21:38:46 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 09 2020 18:11:51 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
