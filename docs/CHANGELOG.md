@@ -26,7 +26,7 @@ The following categories are used:
 
 ***
 
-### dirgistered 0.2.0 (202003yy)
+### dirgistered 0.2.0 (20200309)
 #### ```Added```
 * Project
   * Added a LICENSE to project

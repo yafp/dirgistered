@@ -31,7 +31,7 @@ const openAboutWindow = require('about-window').default // for: about-window
 // ----------------------------------------------------------------------------
 crash.initCrashReporter()
 unhandled.initUnhandled()
-// sentry.enableSentry() // sentry is enabled by default
+//sentry.enableSentry() // sentry is enabled by default
 sentry.disableSentry() // sentry is enabled by default
 
 // ----------------------------------------------------------------------------

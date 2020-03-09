@@ -9,6 +9,18 @@ require('v8-compile-cache')
 // IMPORT DIRGISTERED MODULES
 // ----------------------------------------------------------------------------
 const utils = require('./js/modules/utils.js')
+const sentry = require('./js/modules/sentry.js')
+const crash = require('./js/modules/crashReporter.js') // crashReporter
+const unhandled = require('./js/modules/unhandled.js') // electron-unhandled
+
+
+// ----------------------------------------------------------------------------
+// ERROR HANDLING
+// ----------------------------------------------------------------------------
+crash.initCrashReporter()
+unhandled.initUnhandled()
+//sentry.enableSentry() // sentry is enabled by default
+
 
 // ----------------------------------------------------------------------------
 // VARIABLES
@@ -55,7 +67,7 @@ function uiSelectSource () {
 
     utils.writeConsoleMsg('info', 'uiSelectSource ::: User wants to set a source directory. Now opening dialog to select a new source dir')
     dialog.showOpenDialog(options).then(res => {
-        //utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
+        // utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
 
         if (res.filePaths.length === 0) {
             utils.writeConsoleMsg('warn', 'uiSelectSource ::: User aborted selecting a source dir')
@@ -82,7 +94,7 @@ function uiSelectTarget () {
 
     utils.writeConsoleMsg('info', 'uiSelectTarget ::: User wants to set a source directory. Now opening dialog to select a new target dir')
     dialog.showOpenDialog(options).then(res => {
-        //utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
+        // utils.writeConsoleMsg('warn', '_' + res.filePaths + '_')
 
         if (res.filePaths.length === 0) {
             utils.writeConsoleMsg('warn', 'uiSelectTarget ::: User aborted selecting a target dir')
@@ -192,6 +204,9 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
             var folderName = path.basename(fromPath)
             dirNameArray.push(folderName)
 
+            // size (File Size in Bytes)
+            // console.error(stats.size) // #5
+
             utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Found a subdir: ' + folderName)
         }
 
@@ -199,6 +214,9 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
         //
         if (stats.isFile()) {
             fileFullPathArray.push(fromPath) // store entire path
+
+            // size:
+            // console.warn(stats.size) // #5
 
             // store file name itself
             var curFileName = path.basename(fromPath)
@@ -208,7 +226,6 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
 
     // generate index.html in target dir
     var fileName = path.join(targetFolderPath, 'index.html')
-
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current output file is: _' + fileName + '_.')
 
     // html content
@@ -218,22 +235,25 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     content += '<title>dirgistered</title>\n'
     content += '<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>\n'
     content += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">\n'
+    // https://cdn.datatables.net/
+    //content += '<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>\n'
+    //content += '<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">\n'
     content += '</head>\n'
     content += '<body>\n'
     content += '<div class="container-fluid">\n'
     content += '<nav class="navbar navbar-light bg-light">\n'
-    content += '<span class="navbar-brand mb-0 h1">Source: <span class="badge badge-secondary">' + sourceFolderPath + '</span> <small> generated using <a href="https://github.com/yafp/dirgistered">dirgistered</a></small></span>\n'
+    content += '<span class="navbar-brand mb-0 h1">Source: <span class="badge badge-secondary">' + sourceFolderPath + '</span> <small> generated using <a href="https://github.com/yafp/dirgistered">dirgistered</a>.</small></span>\n'
     content += '</nav>\n'
 
     // add a back button if needed
     if (initialRun === false) {
         content = content + '<a class="btn btn-sm btn-outline-secondary" href="../index.html"><i class="fas fa-backward" aria-hidden="true"></i> Back</a><br>'
-        // content = content + '<button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-folder-open" aria-hidden="true"></i> BACK</button>'
     }
 
     fs.writeFile(fileName, content, function (err) {
         if (err) {
             utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: An error ocurred creating the file _' + err.message + '_')
+            utils.showNoty('error', 'Error occured while creating an index file. Error: ' + err.message)
         }
 
         utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Created single index for: ' + sourceFolderPath + '.')
@@ -241,54 +261,40 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished reading directory')
 
+    var bodyFolderText
+    var bodyFilesText
+    var indexFooter = '<br><br>'
+
     // Section: Folders
     //
     if (dirNameArray.length > 0) {
         // build text
-        var bodyFolderText = '<br><h5><i class="fas fa-folder"></i> Folders (' + dirNameArray.length + ')</h5><hr>'
+        bodyFolderText = '<br><h5><i class="fas fa-folder"></i> Folders (' + dirNameArray.length + ')</h5><hr>'
         for (i = 0; i < dirNameArray.length; i++) {
             bodyFolderText += '<a href="' + dirNameArray[i] + '/index.html">' + dirNameArray[i] + '</a><br>'
         }
-
-        // append text to index file
-        fs.appendFile(fileName, bodyFolderText, function (err) {
-            if (err) {
-                utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the folder section to the .html file.')
-            }
-        })
     }
 
     // Section: Files
     //
     if (fileNameArray.length > 0) {
         // build text
-        var bodyFilesText = '<br><h5><i class="fas fa-file"></i> Files (' + fileNameArray.length + ')</h5><hr>'
+        bodyFilesText = '<br><h5><i class="fas fa-file"></i> Files (' + fileNameArray.length + ')</h5><hr>'
         for (i = 0; i < fileNameArray.length; i++) {
             var extension = fileNameArray[i].split('.').pop()
             var iconCode = utils.getFontAwesomeFileIcon(extension)
             bodyFilesText += iconCode + ' ' + fileNameArray[i] + '<br>'
         }
-
-        // append text to index file
-        fs.appendFile(fileName, bodyFilesText, function (err) {
-            if (err) {
-                utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the files section to the .html file.')
-            }
-        })
     }
 
-    // Section Footer
+    // Append generated text-variables to index / output file
     //
-    var indexFooter = '<br><br>'
-    // append text to index file
-    fs.appendFile(fileName, indexFooter, function (err) {
-        if (err) {
-            utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Failed to append the footer section to the .html file.')
-        }
-    })
+    utils.appendToFile(fileName, bodyFolderText) // append to file
+    utils.appendToFile(fileName, bodyFilesText) // append to file
+    utils.appendToFile(fileName, indexFooter) // append to file
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished index creation for _' + sourceFolderPath + '_. checking sub-dirs now.')
-    updateUILog('Finished indexing directory: "' + sourceFolderPath + '"') // update UI
+    updateUILog('Indexed directory: "' + sourceFolderPath + '"') // update UI
 
     // start indexing for each subdir
     for (var j = 0; j < dirFullPathArray.length; j++) {
@@ -334,6 +340,7 @@ function startIndexing () {
 
     utils.writeConsoleMsg('info', finalMessage)
     utils.showNoty('success', finalMessage)
+    utils.showNotification(finalMessage)
     updateUILog(finalMessage) // update UI log
     loadingAnimationHide() // hide spinner
 
@@ -351,9 +358,11 @@ function validateSourceAndTarget () {
 
     var misconfigurationDetected = false
 
+    // source
     var sourceFolderPath = $('#showSelectedSourceFolderPath').val()
     utils.writeConsoleMsg('info', 'validateSourceAndTarget ::: Source is set to: ' + sourceFolderPath)
 
+    // target
     var targetFolderPath = $('#showSelectedTargetFolderPath').val()
     utils.writeConsoleMsg('info', 'validateSourceAndTarget ::: Target is set to: ' + targetFolderPath)
 
@@ -583,7 +592,6 @@ function loadingAnimationHide () {
 * @description Called via ipc from main.js on-ready to start the search for media-dupes updates
 * @memberof renderer
 */
-
 require('electron').ipcRenderer.on('startSearchUpdatesSilent', function () {
     searchUpdate(true) // If silent = false -> Forces result feedback, even if no update is available
 })

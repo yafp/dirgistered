@@ -1,7 +1,7 @@
 {
     "name": "dirgistered",
     "productName": "dirgistered",
-    "version": "0.1.20200306",
+    "version": "0.2.0",
     "description": "A simple multi-platform directory indexer with html output",
     "main": "main.js",
     "scripts": {

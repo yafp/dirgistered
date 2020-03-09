@@ -239,6 +239,40 @@ function getFontAwesomeFileIcon (extension) {
     return iconCode
 }
 
+/**
+* @function appendToFile
+* @summary Appends text to a given filePath
+* @description Appends text to a given filePath
+* @param {string} filePath - The path to the file which the text should be appended to
+* @param {string} textToAppend - The actual text which should be appended
+*/
+function appendToFile (filePath, textToAppend) {
+    var fs = require('fs')
+
+    fs.appendFile(filePath, textToAppend, function (err) {
+        if (err) {
+            writeConsoleMsg('error', 'appendToFile ::: Failed to append text to the .html file (' + filePath + ').')
+            showNoty('error', 'Error occured while trying to append text to an index file. Error: ' + err)
+        }
+    })
+}
+
+/**
+* @function bytesToSize
+* @summary Calculates bytes to size
+* @description Calculates bytes to size
+* @param {string} bytes - The given amount of bytes
+* @return The actual size
+*/
+function bytesToSize (bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    if (bytes === 0) return 'n/a'
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+    if (i === 0) return `${bytes} ${sizes[i]})`
+    return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
+}
+// source: https://gist.github.com/lanqy/5193417 and variations
+
 // ----------------------------------------------------------------------------
 // EXPORT THE MODULE FUNCTIONS
 // ----------------------------------------------------------------------------
@@ -250,3 +284,5 @@ module.exports.openURL = openURL
 module.exports.generateTimestamp = generateTimestamp
 module.exports.createFolder = createFolder
 module.exports.getFontAwesomeFileIcon = getFontAwesomeFileIcon
+module.exports.appendToFile = appendToFile
+module.exports.bytesToSize = bytesToSize

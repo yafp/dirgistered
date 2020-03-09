@@ -44,22 +44,9 @@ function disableSentry () {
     utils.writeConsoleMsg('warn', 'disableSentry ::: Disabled sentry')
 }
 
-/**
-* @function countEvent
-* @summary Captures a message or event
-* @description Captures a message or event
-*/
-function countEvent (eventName) {
-    var isReportingEnabled = utils.globalObjectGet('enableErrorReporting')
-    if (isReportingEnabled === true) {
-        Sentry.captureMessage(eventName)
-    }
-}
-
 // ----------------------------------------------------------------------------
 // EXPORT THE MODULE FUNCTIONS
 // ----------------------------------------------------------------------------
 //
 module.exports.enableSentry = enableSentry
 module.exports.disableSentry = disableSentry
-module.exports.countEvent = countEvent
