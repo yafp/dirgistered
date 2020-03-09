@@ -1,4 +1,2 @@
-!macro customInstall
-    ShowInstDetails show
-    ShowUninstDetails show
-!macroend
+ShowInstDetails show
+ShowUninstDetails show
