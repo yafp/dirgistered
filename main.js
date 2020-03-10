@@ -31,7 +31,7 @@ const openAboutWindow = require('about-window').default // for: about-window
 // ----------------------------------------------------------------------------
 crash.initCrashReporter()
 unhandled.initUnhandled()
-//sentry.enableSentry() // sentry is enabled by default
+// sentry.enableSentry() // sentry is enabled by default
 sentry.disableSentry() // sentry is enabled by default
 
 // ----------------------------------------------------------------------------
@@ -40,6 +40,7 @@ sentry.disableSentry() // sentry is enabled by default
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let settingsWindow
 
 const gotTheLock = app.requestSingleInstanceLock() // for: single-instance handling
 const defaultUserDataPath = app.getPath('userData') // for: storing window position and size
@@ -52,6 +53,10 @@ const { urlGitHubGeneral, urlGitHubIssues, urlGitHubChangelog, urlGitHubReleases
 // mainWindow: minimal window size
 const mainWindowMinimalWindowHeight = 650
 const mainWindowMinimalWindowWidth = 700
+
+// settingsWundow: minimal window size
+const settingsWindowMinimalWindowHeight = 400
+const settingsWindowMinimalWindowWidth = 800
 
 // ----------------------------------------------------------------------------
 // FUNCTIONS
@@ -86,6 +91,67 @@ function doLog (type, message) {
         log.silly(prefix + message)
             // code block
     }
+}
+
+/**
+* @function createWindowSettings
+* @summary Manages the BrowserWindow for the Settings UI
+* @description Manages the BrowserWindow for the Settings UI
+* @memberof main
+*/
+function createWindowSettings () {
+    doLog('info', 'createWindowSettings ::: Creating the settings window')
+
+    // Create the browser window.
+    settingsWindow = new BrowserWindow({
+        // parent: mainWindow,
+        modal: true,
+        frame: true, // false results in a borderless window. Needed for custom titlebar
+        titleBarStyle: 'default', // needed for custom-electron-titlebar. See: https://electronjs.org/docs/api/frameless-window
+        backgroundColor: '#ffffff', // since 0.3.0
+        show: true, // hide until: ready-to-show
+        center: true, // Show window in the center of the screen. (since 0.3.0)
+        width: settingsWindowMinimalWindowWidth,
+        minWidth: settingsWindowMinimalWindowWidth,
+        // resizable: false, // this conflickts with opening dev tools
+        minimizable: false, // not implemented on linux
+        maximizable: false, // not implemented on linux
+        height: settingsWindowMinimalWindowHeight,
+        minHeight: settingsWindowMinimalWindowHeight,
+        icon: path.join(__dirname, 'app/img/icon/icon.png'),
+        webPreferences: {
+            nodeIntegration: true,
+            webSecurity: true // introduced in 0.3.0
+        }
+    })
+
+    // and load the setting.html of the app.
+    settingsWindow.loadFile('app/settings.html')
+
+    // window needs no menu
+    settingsWindow.removeMenu()
+
+    // Call from renderer: Settings UI - toggle dev tools
+    ipcMain.on('settingsToggleDevTools', function () {
+        settingsWindow.webContents.toggleDevTools()
+    })
+
+    // Emitted before the window is closed.
+    settingsWindow.on('close', function () {
+        doLog('info', 'createWindowSettings ::: settingsWindow will close (event: close)')
+    })
+
+    // Emitted when the window is closed.
+    settingsWindow.on('closed', function (event) {
+        doLog('info', 'createWindowSettings ::: settingsWindow is closed (event: closed)')
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows, this is the time
+        // when you should delete the corresponding element.
+        settingsWindow = null
+
+        // unblur main UI
+        mainWindow.webContents.send('unblurMainUI')
+    })
 }
 
 /**
@@ -143,6 +209,11 @@ function createWindowMain () {
             webSecurity: true // introduced in 0.3.0
             // preload: path.join(__dirname, 'preload.js')
         }
+    })
+
+    // Call from renderer: Option: load settings UI
+    ipcMain.on('settingsUiLoad', function () {
+        createWindowSettings()
     })
 
     // Restore window position if possible
