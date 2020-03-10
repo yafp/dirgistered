@@ -26,6 +26,31 @@ The following categories are used:
 
 ***
 
+### dirgistered 0.3.0 (2020xxyy) - DEV
+#### ```Added```
+* Index
+  * Added dirgister logo to head
+  * DataTables (plus jQuery)
+    * Added support for DataTables. See [#2](https://github.com/yafp/dirgistered/issues/2)
+    * Added support for DataTables buttons.
+  * Added a basic footer. See [#3](https://github.com/yafp/dirgistered/issues/3)
+  * Added file / folder size. See [#5](https://github.com/yafp/dirgistered/issues/5)
+* App
+  * Added processing modal dialog which is displayed while app is generating indexes.
+  * Added settings UI. See [#4](https://github.com/yafp/dirgistered/issues/4)
+  * Opening settings UI blurs the mainWindow
+
+####  ```Changed```
+* Windows: NSIS Installer
+  * Added install details
+  * Added uninstall details
+* Dependencies
+  * Updated ```electron``` from ```8.1.0``` to ```8.1.1```
+  * Updated ```sentry``` from ```1.2.1``` to ```1.3.0```
+
+
+***
+
 ### dirgistered 0.2.0 (20200309)
 #### ```Added```
 * Project
