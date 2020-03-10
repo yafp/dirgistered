@@ -61,3 +61,19 @@ h3{
 .row-empty{
     height: 20px;
 }
+
+
+
+/* ########################################################################## */
+/* BOOTSTRAP MODAL - used as SPLASH */
+/* ########################################################################## */
+/* opacity of background */
+.modal-backdrop
+{
+    opacity:0.1 !important;
+}
+
+/* removing border from splash */
+.no-border{
+  border:none !important;
+}

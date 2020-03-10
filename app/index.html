@@ -46,7 +46,28 @@
 
 
 <body>
-    <div class="container-fluid dirgistered_nonSelectableText">
+    <div id="mainContainer" class="container-fluid dirgistered_nonSelectableText">
+
+
+        <!--processing modal -->
+        <div class="modal animated fadeIn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content no-border">
+                    <div class="modal-body">
+                        <center>
+                            <img src="img/icon/icon.png" class="ifl-image" height="256">
+                            <br>
+                            <b>dirgister</b> is doing <i>dirgister-things</i>
+                            <br>
+                            <div class="spinner-border" style="width: 8rem; height: 8rem;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- splash -->
 
 
         <!-- empty line -->
@@ -87,7 +108,7 @@
         </div>
 
         <!-- start -->
-        <button type="button" id="button_startIndexing" class="btn btn-primary defaultButtonWidth" onclick="startIndexing();" disabled data-step="4" data-intro="Finally start the indexing using this button" data-toggle="tooltip" data-placement="top" title="Starts the index generation"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
+        <button type="button" id="button_startIndexing" class="btn btn-primary defaultButtonWidth" onclick="prepareIndexing();" disabled data-step="4" data-intro="Finally start the indexing using this button" data-toggle="tooltip" data-placement="top" title="Starts the index generation"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
 
         <!-- empty line -->
         <div class="row-fluid row-empty">&nbsp;</div>
@@ -98,6 +119,7 @@
         </div>
 
         <!-- other buttons -->
+        <button type="button" id="button_openSettings" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="openSettings();" data-toggle="tooltip" data-placement="top" title="Opens the application settings"><i class="fas fa-cog" aria-hidden="true"></i> Settings</button>
         <button type="button" id="button_openIndex" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="openIndex();" disabled data-toggle="tooltip" data-placement="top" title="Opens the folder containing the generated index files" data-step="6" data-intro="This button gives access to the generated index files"><i class="fas fa-folder-open" aria-hidden="true"></i> Open</button>
         <button type="button" id="button_startIntro" class="btn btn-sm btn-outline-secondary defaultButtonWidth" onclick="startIntro();" data-toggle="tooltip" data-placement="top" title="Shows an Intro about dirgistered"><i class="fas fa-info-circle" aria-hidden="true"></i> Intro</button>
         <button type="button" class="btn btn-sm btn-outline-danger float-right defaultButtonWidth" onclick="resetMainUI();" data-toggle="tooltip" data-placement="top" title="Resets the User-Interface" data-step="7" data-intro="This button resets the User Interace "><i class="fa fa-undo"></i> Reset</button>
