@@ -1,7 +1,7 @@
 {
     "name": "dirgistered",
     "productName": "dirgistered",
-    "version": "0.2.20200310",
+    "version": "0.3.0",
     "description": "A simple multi-platform directory indexer with html output",
     "main": "main.js",
     "scripts": {
@@ -178,7 +178,7 @@
     },
     "devDependencies": {
         "electron": "^8.1.1",
-        "electron-builder": "^22.4.0",
+        "electron-builder": "^22.4.1",
         "electron-packager": "^14.2.1",
         "eslint": "^6.8.0",
         "jsdoc": "^3.6.3",
@@ -195,7 +195,7 @@
         "custom-electron-titlebar": "^3.2.0",
         "electron-is-dev": "^1.1.0",
         "electron-json-storage": "^4.1.8",
-        "electron-log": "^4.0.7",
+        "electron-log": "^4.1.0",
         "electron-unhandled": "^3.0.2",
         "electron-util": "^0.14.0",
         "intro.js": "^2.9.3",
