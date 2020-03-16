@@ -18,7 +18,7 @@ const unhandled = require('./js/modules/unhandled.js') // electron-unhandled
 // ----------------------------------------------------------------------------
 crash.initCrashReporter()
 unhandled.initUnhandled()
-// sentry.enableSentry() // sentry is enabled by default
+sentry.enableSentry() // sentry is enabled by default
 
 // ----------------------------------------------------------------------------
 // VARIABLES

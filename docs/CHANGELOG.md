@@ -26,7 +26,7 @@ The following categories are used:
 
 ***
 
-### dirgistered 0.3.0 (2020xxyy) - DEV
+### dirgistered 0.3.0 (20200316)
 #### ```Added```
 * Index
   * Added dirgister logo to head
@@ -39,6 +39,8 @@ The following categories are used:
   * Added processing modal dialog which is displayed while app is generating indexes.
   * Added settings UI. See [#4](https://github.com/yafp/dirgistered/issues/4)
   * Opening settings UI blurs the mainWindow
+  * Sentry
+    * Sentry is now enabled by default
 
 ####  ```Changed```
 * Windows: NSIS Installer
@@ -46,6 +48,8 @@ The following categories are used:
   * Added uninstall details
 * Dependencies
   * Updated ```electron``` from ```8.1.0``` to ```8.1.1```
+  * Updated ```electron-builder``` from ```22.4.0``` to ``22.4.1```
+  * Updated ```electron-log``` from ```4.0.7``` to ```4.1.0```
   * Updated ```sentry``` from ```1.2.1``` to ```1.3.0```
 
 
