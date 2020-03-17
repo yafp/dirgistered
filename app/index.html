@@ -44,10 +44,8 @@
 
 </head>
 
-
 <body>
     <div id="mainContainer" class="container-fluid dirgistered_nonSelectableText">
-
 
         <!--processing modal -->
         <div class="modal animated fadeIn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -67,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <!-- splash -->
+        <!-- processing modal-->
 
 
         <!-- empty line -->
@@ -136,8 +134,9 @@
 // execute on ready
 $( document ).ready(function()
 {
-    //console.log( 'index.html ready' )
+    console.log( 'index.html ready' )
     titlebarInit() // init titleBar
+    settingsLoadAllOnAppStart() // load user settings
 });
 </script>
 

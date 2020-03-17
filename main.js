@@ -58,6 +58,14 @@ const mainWindowMinimalWindowWidth = 700
 const settingsWindowMinimalWindowHeight = 400
 const settingsWindowMinimalWindowWidth = 800
 
+
+var enableErrorReporting = true
+global.sharedObj = {
+    // settings UI
+    enableErrorReporting: enableErrorReporting,
+}
+
+
 // ----------------------------------------------------------------------------
 // FUNCTIONS
 // ----------------------------------------------------------------------------
@@ -228,6 +236,14 @@ function createWindowMain () {
         mainWindow.show()
         mainWindow.focus()
     })
+
+    // Call from renderer: Update property from globalObj
+    ipcMain.on('globalObjectSet', function (event, property, value) {
+        doLog('info', 'globalObjectSet ::: Set _' + property + '_ to: _' + value + '_')
+        global.sharedObj[property] = value
+        console.warn(global.sharedObj)
+    })
+
 
     // and load the index.html of the app.
     mainWindow.loadFile('app/index.html')

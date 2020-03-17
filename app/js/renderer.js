@@ -296,18 +296,31 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexBaseCode += '<head>\n'
     indexBaseCode += '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>\n'
     indexBaseCode += '<title>dirgistered</title>\n'
+
     // jQuery
     indexBaseCode += '<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>\n'
+
     // font awesome
     indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>\n'
+
     // bootstrap
     indexBaseCode += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">\n'
+
     // DataTables - core
     indexBaseCode += '<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>\n'
     indexBaseCode += '<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">\n'
     // DataTables - buttons
     indexBaseCode += '<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>\n'
     indexBaseCode += '<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">\n'
+    indexBaseCode += '<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>\n'
+    // print
+    indexBaseCode += '<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>\n'
+    // jszip 
+    indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js"></script>\n'
+    // pdfmake
+    indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js"></script>\n'
+    indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js"></script>\n'
+
     // rest
     indexBaseCode += '</head>\n'
     indexBaseCode += '<body>\n'
@@ -364,7 +377,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexFooterPost += '        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],\n'
 
     indexFooterPost += '        buttons: [\n'
-    indexFooterPost += '            "copy", "excel", "pdf"\n'
+    indexFooterPost += '            "print", "copy", "excel", "pdf"\n'
     indexFooterPost += '        ],\n'
 
     // Dropdown for columns
@@ -727,6 +740,83 @@ function windowMainBlurSet (enable) {
         utils.writeConsoleMsg('info', 'windowMainBlurSet ::: Disabled blur effect')
     }
 }
+
+
+
+
+/**
+* @function windowSettingsClickCheckboxErrorReporting
+* @summary Handles the click on the checkbox error reporting
+* @description Triggered from the settingsWindow.
+* @memberof renderer
+*/
+function windowSettingsClickCheckboxErrorReporting () {
+    if ($('#checkboxEnableErrorReporting').is(':checked')) {
+        utils.writeConsoleMsg('info', 'settingsToggleErrorReporting ::: Error reporting is now enabled')
+        utils.userSettingWrite('enableErrorReporting', true)
+        sentry.enableSentry()
+    } else {
+        // ask if user really wants to disable error-reporting (using a confirm dialog)
+        const Noty = require('noty')
+        var n = new Noty(
+            {
+                theme: 'bootstrap-v4',
+                layout: 'bottom',
+                type: 'info',
+                closeWith: [''], // to prevent closing the confirm-dialog by clicking something other then a confirm-dialog-button
+                text: '<b>Do you really want to disable reporting?</b><br><br>* We don\'t track users<br>* We don\'t store any IP informations<br>* We only collect error reports<br><br>This helps improving dirgistered',
+                buttons: [
+                    Noty.button('Yes', 'btn btn-danger mediaDupes_btnDownloadActionWidth', function () {
+                        n.close()
+                        utils.writeConsoleMsg('info', 'settingsToggleErrorReporting ::: Error reporting is now disabled')
+                        utils.userSettingWrite('enableErrorReporting', false)
+                        sentry.disableSentry()
+                    },
+                    {
+                        id: 'button1', 'data-status': 'ok'
+                    }),
+
+                    Noty.button('No', 'btn btn-success mediaDupes_btnDownloadActionWidth float-right', function () {
+                        n.close()
+                        $('#checkboxEnableErrorReporting').prop('checked', true) // revert state of checkbox
+                        utils.showNoty('success', '<b>Thanks</b> for supporting dirgistered development with your error reports.')
+                        utils.writeConsoleMsg('info', 'settingsToggleErrorReporting ::: User cancelled disabling of error-reporting')
+                    })
+                ]
+            })
+
+        n.show() // show the noty dialog
+    }
+}
+
+
+/**
+* @function settingsLoadAllOnAppStart
+* @summary Reads all user-setting-files and fills some global variables
+* @description Reads all user-setting-files and fills some global variables
+* @memberof renderer
+*/
+function settingsLoadAllOnAppStart () {
+    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now ...')
+    //utils.userSettingRead('enablePrereleases') // pre-releases
+    utils.userSettingRead('enableErrorReporting') // get setting for error-reporting
+
+}
+
+
+/**
+* @function settingsLoadAllOnSettingsUiLoad
+* @summary Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @description Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @memberof renderer
+*/
+function settingsLoadAllOnSettingsUiLoad () {
+    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now and adjust the settings UI')
+    //utils.userSettingRead('enablePrereleases', true) // pre-releases
+    utils.userSettingRead('enableErrorReporting', true) // get setting for error-reporting
+}
+
+
 
 // ----------------------------------------------------------------------------
 // IPC

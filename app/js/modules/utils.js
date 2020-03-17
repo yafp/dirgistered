@@ -274,6 +274,150 @@ function bytesToSize (bytes) {
 }
 // source: https://gist.github.com/lanqy/5193417 and variations
 
+
+/**
+* @function userSettingWrite
+* @summary Write a user setting to file
+* @description Writes a value for a given key to electron-json-storage
+* @param {String} key - Name of storage key
+* @param {String} value - New value
+* @param {boolean} [silent] - If true - no notification is displayed on initial settingscreation
+* @throws Exception when writing a file failed
+*/
+function userSettingWrite (key, value, silent = false) {
+    const storage = require('electron-json-storage')
+    const remote = require('electron').remote
+    const app = remote.app
+    const path = require('path')
+
+    // set new path for userUsettings
+    const userSettingsPath = path.join(app.getPath('userData'), 'UserSettings')
+    storage.setDataPath(userSettingsPath)
+
+    // write the user setting
+    storage.set(key, { setting: value }, function (error) {
+        if (error) {
+            writeConsoleMsg('error', 'userSettingWrite ::: Unable to write setting _' + key + '_ = _' + value + '_. Error: ' + error)
+            throw error
+        }
+        writeConsoleMsg('info', 'userSettingWrite ::: _' + key + '_ = _' + value + '_')
+        globalObjectSet(key, value)
+
+        if (silent === false) {
+            showNoty('success', 'Set <b>' + key + '</b> to <b>' + value + '</b>.')
+        }
+    })
+}
+
+/**
+* @function userSettingRead
+* @summary Read a user setting from file
+* @description Reads a value stored in local storage (for a given key)
+* @param {String} key - Name of local storage key
+* @param {Boolean} [optionalUpdateSettingUI] Boolean used for an ugly hack
+*/
+function userSettingRead (key, optionalUpdateSettingUI = false) {
+    const storage = require('electron-json-storage')
+    const remote = require('electron').remote
+    const app = remote.app
+    const path = require('path')
+
+    // writeConsoleMsg('info', 'userSettingRead ::: Trying to read value of key: _' + key + '_.')
+
+    // change path for userSettings
+    const userSettingsPath = path.join(app.getPath('userData'), 'UserSettings')
+    storage.setDataPath(userSettingsPath)
+
+    // read the json file
+    storage.get(key, function (error, data) {
+        if (error) {
+            writeConsoleMsg('error', 'userSettingRead ::: Unable to read user setting. Error: ' + error)
+            throw error
+        }
+        var value = data.setting
+        // writeConsoleMsg('info', 'userSettingRead :::  _' + key + '_ = _' + value + '_.')
+
+
+        // Setting: enablePrereleases
+        //
+        if (key === 'enablePrereleases') {
+            var settingPrereleases
+
+            // if it is not yet configured
+            if ((value === null) || (value === undefined)) {
+                settingPrereleases = false // set the default
+                writeConsoleMsg('warn', 'userSettingRead ::: No user setting found for: _' + key + '_. Initializing it now with the default value: _' + settingPrereleases + '_.')
+                userSettingWrite('enablePrereleases', settingPrereleases, true) // write the setting
+            } else {
+                settingPrereleases = value // update global var
+                writeConsoleMsg('info', 'userSettingRead ::: Found configured _' + key + '_ with value: _' + settingPrereleases + '_.')
+            }
+            globalObjectSet('enablePrereleases', settingPrereleases) // update the global object
+
+            // Optional: update the settings UI
+            if (optionalUpdateSettingUI === true) {
+                if (settingPrereleases === true) {
+                    $('#checkboxEnablePreReleases').prop('checked', true)
+                } else {
+                    $('#checkboxEnablePreReleases').prop('checked', false)
+                }
+            }
+        }
+        // end: enablePrereleases
+
+        // Setting: enableErrorReporting
+        //
+        if (key === 'enableErrorReporting') {
+            var settingEnableErrorReporting
+
+            // not configured
+            if ((value === null) || (value === undefined)) {
+                settingEnableErrorReporting = true
+                writeConsoleMsg('warn', 'userSettingRead ::: No user setting found for: _' + key + '_. Initializing it now with the default value: _' + settingEnableErrorReporting + '_.')
+                userSettingWrite('enableErrorReporting', true, true) // write the setting
+                sentry.enableSentry()
+            } else {
+                settingEnableErrorReporting = value
+                writeConsoleMsg('info', 'userSettingRead ::: Found configured _' + key + '_ with value: _' + settingEnableErrorReporting + '_.')
+
+                if (settingEnableErrorReporting === true) {
+                    sentry.enableSentry()
+                } else {
+                    sentry.disableSentry()
+                }
+            }
+            globalObjectSet('enableErrorReporting', settingEnableErrorReporting) // update the global object
+
+            // Optional: update the settings UI
+            if (optionalUpdateSettingUI === true) {
+                if (settingEnableErrorReporting === true) {
+                    $('#checkboxEnableErrorReporting').prop('checked', true)
+                } else {
+                    $('#checkboxEnableErrorReporting').prop('checked', false)
+                }
+            }
+        }
+        // end: enableErrorReporting
+
+
+    })
+}
+
+
+/**
+* @function globalObjectSet
+* @summary Updates the value of a single property from the global object in main.js
+* @description Updates the value of a single property from the global object in main.js
+* @param {String} property - Name of the property
+* @param {String} value - The new value of the property
+*/
+function globalObjectSet (property, value) {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.send('globalObjectSet', property, value)
+}
+
+
+
 // ----------------------------------------------------------------------------
 // EXPORT THE MODULE FUNCTIONS
 // ----------------------------------------------------------------------------
@@ -287,3 +431,6 @@ module.exports.createFolder = createFolder
 module.exports.getFontAwesomeFileIcon = getFontAwesomeFileIcon
 module.exports.appendToFile = appendToFile
 module.exports.bytesToSize = bytesToSize
+module.exports.userSettingWrite = userSettingWrite
+module.exports.userSettingRead = userSettingRead
+module.exports.globalObjectSet = globalObjectSet
