@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.createWindowSettings">createWindowSettings</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li><li><a href="global.html#windowMainBlurSet">windowMainBlurSet</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~globalObjectSet">globalObjectSet</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~userSettingRead">userSettingRead</a></li><li data-type='method'><a href="module-utils.html#~userSettingWrite">userSettingWrite</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.createWindowSettings">createWindowSettings</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li><li><a href="global.html#windowMainBlurSet">windowMainBlurSet</a></li></ul>
 </nav>
 
 <div id="main">
@@ -891,6 +891,167 @@
 
     
 
+    <h4 class="name" id="~globalObjectSet"><span class="type-signature">(inner) </span>globalObjectSet<span class="signature">(property, value)</span><span class="type-signature"></span></h4>
+
+    
+    <p class="summary usertext"><p>Updates the value of a single property from the global object in main.js</p></p>
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_js_modules_utils.js.html">app/js/modules/utils.js</a>, <a href="app_js_modules_utils.js.html#line407">line 407</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Updates the value of a single property from the global object in main.js</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>property</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name of the property</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new value of the property</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="~openURL"><span class="type-signature">(inner) </span>openURL<span class="signature">(url)</span><span class="type-signature"></span></h4>
 
     
@@ -1422,6 +1583,411 @@
 
     
 
+    <h4 class="name" id="~userSettingRead"><span class="type-signature">(inner) </span>userSettingRead<span class="signature">(key, optionalUpdateSettingUI<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+    <p class="summary usertext"><p>Read a user setting from file</p></p>
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_js_modules_utils.js.html">app/js/modules/utils.js</a>, <a href="app_js_modules_utils.js.html#line312">line 312</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Reads a value stored in local storage (for a given key)</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of local storage key</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>optionalUpdateSettingUI</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Boolean used for an ugly hack</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~userSettingWrite"><span class="type-signature">(inner) </span>userSettingWrite<span class="signature">(key, value, silent<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+    <p class="summary usertext"><p>Write a user setting to file</p></p>
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_js_modules_utils.js.html">app/js/modules/utils.js</a>, <a href="app_js_modules_utils.js.html#line278">line 278</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Writes a value for a given key to electron-json-storage</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of storage key</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>New value</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>silent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>If true - no notification is displayed on initial settingscreation</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc usertext">
+    
+        <p>Exception when writing a file failed</p>
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="~writeConsoleMsg"><span class="type-signature">(inner) </span>writeConsoleMsg<span class="signature">(type, message)</span><span class="type-signature"></span></h4>
 
     
@@ -1598,7 +2164,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 17 2020 19:18:37 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 17 2020 19:19:05 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

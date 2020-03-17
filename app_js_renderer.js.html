@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.createWindowSettings">createWindowSettings</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li><li><a href="global.html#windowMainBlurSet">windowMainBlurSet</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~globalObjectSet">globalObjectSet</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~userSettingRead">userSettingRead</a></li><li data-type='method'><a href="module-utils.html#~userSettingWrite">userSettingWrite</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.createWindowSettings">createWindowSettings</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li><li><a href="global.html#windowMainBlurSet">windowMainBlurSet</a></li></ul>
 </nav>
 
 <div id="main">
@@ -340,18 +340,31 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexBaseCode += '&lt;head>\n'
     indexBaseCode += '&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>\n'
     indexBaseCode += '&lt;title>dirgistered&lt;/title>\n'
+
     // jQuery
     indexBaseCode += '&lt;script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">&lt;/script>\n'
+
     // font awesome
     indexBaseCode += '&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous">&lt;/script>\n'
+
     // bootstrap
     indexBaseCode += '&lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">\n'
+
     // DataTables - core
     indexBaseCode += '&lt;script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">&lt;/script>\n'
     indexBaseCode += '&lt;link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">\n'
     // DataTables - buttons
     indexBaseCode += '&lt;script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js">&lt;/script>\n'
     indexBaseCode += '&lt;link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">\n'
+    indexBaseCode += '&lt;script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js">&lt;/script>\n'
+    // print
+    indexBaseCode += '&lt;script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js">&lt;/script>\n'
+    // jszip 
+    indexBaseCode += '&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js">&lt;/script>\n'
+    // pdfmake
+    indexBaseCode += '&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js">&lt;/script>\n'
+    indexBaseCode += '&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js">&lt;/script>\n'
+
     // rest
     indexBaseCode += '&lt;/head>\n'
     indexBaseCode += '&lt;body>\n'
@@ -408,7 +421,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexFooterPost += '        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],\n'
 
     indexFooterPost += '        buttons: [\n'
-    indexFooterPost += '            "copy", "excel", "pdf"\n'
+    indexFooterPost += '            "print", "copy", "excel", "pdf"\n'
     indexFooterPost += '        ],\n'
 
     // Dropdown for columns
@@ -772,6 +785,83 @@ function windowMainBlurSet (enable) {
     }
 }
 
+
+
+
+/**
+* @function windowSettingsClickCheckboxErrorReporting
+* @summary Handles the click on the checkbox error reporting
+* @description Triggered from the settingsWindow.
+* @memberof renderer
+*/
+function windowSettingsClickCheckboxErrorReporting () {
+    if ($('#checkboxEnableErrorReporting').is(':checked')) {
+        utils.writeConsoleMsg('info', 'settingsToggleErrorReporting ::: Error reporting is now enabled')
+        utils.userSettingWrite('enableErrorReporting', true)
+        sentry.enableSentry()
+    } else {
+        // ask if user really wants to disable error-reporting (using a confirm dialog)
+        const Noty = require('noty')
+        var n = new Noty(
+            {
+                theme: 'bootstrap-v4',
+                layout: 'bottom',
+                type: 'info',
+                closeWith: [''], // to prevent closing the confirm-dialog by clicking something other then a confirm-dialog-button
+                text: '&lt;b>Do you really want to disable reporting?&lt;/b>&lt;br>&lt;br>* We don\'t track users&lt;br>* We don\'t store any IP informations&lt;br>* We only collect error reports&lt;br>&lt;br>This helps improving dirgistered',
+                buttons: [
+                    Noty.button('Yes', 'btn btn-danger mediaDupes_btnDownloadActionWidth', function () {
+                        n.close()
+                        utils.writeConsoleMsg('info', 'settingsToggleErrorReporting ::: Error reporting is now disabled')
+                        utils.userSettingWrite('enableErrorReporting', false)
+                        sentry.disableSentry()
+                    },
+                    {
+                        id: 'button1', 'data-status': 'ok'
+                    }),
+
+                    Noty.button('No', 'btn btn-success mediaDupes_btnDownloadActionWidth float-right', function () {
+                        n.close()
+                        $('#checkboxEnableErrorReporting').prop('checked', true) // revert state of checkbox
+                        utils.showNoty('success', '&lt;b>Thanks&lt;/b> for supporting dirgistered development with your error reports.')
+                        utils.writeConsoleMsg('info', 'settingsToggleErrorReporting ::: User cancelled disabling of error-reporting')
+                    })
+                ]
+            })
+
+        n.show() // show the noty dialog
+    }
+}
+
+
+/**
+* @function settingsLoadAllOnAppStart
+* @summary Reads all user-setting-files and fills some global variables
+* @description Reads all user-setting-files and fills some global variables
+* @memberof renderer
+*/
+function settingsLoadAllOnAppStart () {
+    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now ...')
+    //utils.userSettingRead('enablePrereleases') // pre-releases
+    utils.userSettingRead('enableErrorReporting') // get setting for error-reporting
+
+}
+
+
+/**
+* @function settingsLoadAllOnSettingsUiLoad
+* @summary Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @description Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @memberof renderer
+*/
+function settingsLoadAllOnSettingsUiLoad () {
+    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now and adjust the settings UI')
+    //utils.userSettingRead('enablePrereleases', true) // pre-releases
+    utils.userSettingRead('enableErrorReporting', true) // get setting for error-reporting
+}
+
+
+
 // ----------------------------------------------------------------------------
 // IPC
 // ----------------------------------------------------------------------------
@@ -833,7 +923,7 @@ require('electron').ipcRenderer.on('startSearchUpdatesVerbose', function () {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 17 2020 19:18:37 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 17 2020 19:19:05 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

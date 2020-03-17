@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.createWindowSettings">createWindowSettings</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li><li><a href="global.html#windowMainBlurSet">windowMainBlurSet</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-crashReporter.html">crashReporter</a><ul class='methods'><li data-type='method'><a href="module-crashReporter.html#~initCrashReporter">initCrashReporter</a></li></ul></li><li><a href="module-githubUrls.html">githubUrls</a></li><li></li><li><a href="module-sentry.html">sentry</a><ul class='methods'><li data-type='method'><a href="module-sentry.html#~disableSentry">disableSentry</a></li><li data-type='method'><a href="module-sentry.html#~enableSentry">enableSentry</a></li></ul></li><li><a href="module-unhandled.html">unhandled</a><ul class='methods'><li data-type='method'><a href="module-unhandled.html#~initUnhandled">initUnhandled</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~appendToFile">appendToFile</a></li><li data-type='method'><a href="module-utils.html#~bytesToSize">bytesToSize</a></li><li data-type='method'><a href="module-utils.html#~createFolder">createFolder</a></li><li data-type='method'><a href="module-utils.html#~generateTimestamp">generateTimestamp</a></li><li data-type='method'><a href="module-utils.html#~getFontAwesomeFileIcon">getFontAwesomeFileIcon</a></li><li data-type='method'><a href="module-utils.html#~globalObjectSet">globalObjectSet</a></li><li data-type='method'><a href="module-utils.html#~openURL">openURL</a></li><li data-type='method'><a href="module-utils.html#~showNotification">showNotification</a></li><li data-type='method'><a href="module-utils.html#~showNoty">showNoty</a></li><li data-type='method'><a href="module-utils.html#~userSettingRead">userSettingRead</a></li><li data-type='method'><a href="module-utils.html#~userSettingWrite">userSettingWrite</a></li><li data-type='method'><a href="module-utils.html#~writeConsoleMsg">writeConsoleMsg</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="main.html">main</a><ul class='methods'><li data-type='method'><a href="main.html#.createMenuMain">createMenuMain</a></li><li data-type='method'><a href="main.html#.createWindowMain">createWindowMain</a></li><li data-type='method'><a href="main.html#.createWindowSettings">createWindowSettings</a></li><li data-type='method'><a href="main.html#.doLog">doLog</a></li><li data-type='method'><a href="main.html#.forceSingleAppInstance">forceSingleAppInstance</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#loadingAnimationHide">loadingAnimationHide</a></li><li><a href="global.html#loadingAnimationShow">loadingAnimationShow</a></li><li><a href="global.html#logScrollToEnd">logScrollToEnd</a></li><li><a href="global.html#startIntro">startIntro</a></li><li><a href="global.html#windowMainBlurSet">windowMainBlurSet</a></li></ul>
 </nav>
 
 <div id="main">
@@ -318,6 +318,150 @@ function bytesToSize (bytes) {
 }
 // source: https://gist.github.com/lanqy/5193417 and variations
 
+
+/**
+* @function userSettingWrite
+* @summary Write a user setting to file
+* @description Writes a value for a given key to electron-json-storage
+* @param {String} key - Name of storage key
+* @param {String} value - New value
+* @param {boolean} [silent] - If true - no notification is displayed on initial settingscreation
+* @throws Exception when writing a file failed
+*/
+function userSettingWrite (key, value, silent = false) {
+    const storage = require('electron-json-storage')
+    const remote = require('electron').remote
+    const app = remote.app
+    const path = require('path')
+
+    // set new path for userUsettings
+    const userSettingsPath = path.join(app.getPath('userData'), 'UserSettings')
+    storage.setDataPath(userSettingsPath)
+
+    // write the user setting
+    storage.set(key, { setting: value }, function (error) {
+        if (error) {
+            writeConsoleMsg('error', 'userSettingWrite ::: Unable to write setting _' + key + '_ = _' + value + '_. Error: ' + error)
+            throw error
+        }
+        writeConsoleMsg('info', 'userSettingWrite ::: _' + key + '_ = _' + value + '_')
+        globalObjectSet(key, value)
+
+        if (silent === false) {
+            showNoty('success', 'Set &lt;b>' + key + '&lt;/b> to &lt;b>' + value + '&lt;/b>.')
+        }
+    })
+}
+
+/**
+* @function userSettingRead
+* @summary Read a user setting from file
+* @description Reads a value stored in local storage (for a given key)
+* @param {String} key - Name of local storage key
+* @param {Boolean} [optionalUpdateSettingUI] Boolean used for an ugly hack
+*/
+function userSettingRead (key, optionalUpdateSettingUI = false) {
+    const storage = require('electron-json-storage')
+    const remote = require('electron').remote
+    const app = remote.app
+    const path = require('path')
+
+    // writeConsoleMsg('info', 'userSettingRead ::: Trying to read value of key: _' + key + '_.')
+
+    // change path for userSettings
+    const userSettingsPath = path.join(app.getPath('userData'), 'UserSettings')
+    storage.setDataPath(userSettingsPath)
+
+    // read the json file
+    storage.get(key, function (error, data) {
+        if (error) {
+            writeConsoleMsg('error', 'userSettingRead ::: Unable to read user setting. Error: ' + error)
+            throw error
+        }
+        var value = data.setting
+        // writeConsoleMsg('info', 'userSettingRead :::  _' + key + '_ = _' + value + '_.')
+
+
+        // Setting: enablePrereleases
+        //
+        if (key === 'enablePrereleases') {
+            var settingPrereleases
+
+            // if it is not yet configured
+            if ((value === null) || (value === undefined)) {
+                settingPrereleases = false // set the default
+                writeConsoleMsg('warn', 'userSettingRead ::: No user setting found for: _' + key + '_. Initializing it now with the default value: _' + settingPrereleases + '_.')
+                userSettingWrite('enablePrereleases', settingPrereleases, true) // write the setting
+            } else {
+                settingPrereleases = value // update global var
+                writeConsoleMsg('info', 'userSettingRead ::: Found configured _' + key + '_ with value: _' + settingPrereleases + '_.')
+            }
+            globalObjectSet('enablePrereleases', settingPrereleases) // update the global object
+
+            // Optional: update the settings UI
+            if (optionalUpdateSettingUI === true) {
+                if (settingPrereleases === true) {
+                    $('#checkboxEnablePreReleases').prop('checked', true)
+                } else {
+                    $('#checkboxEnablePreReleases').prop('checked', false)
+                }
+            }
+        }
+        // end: enablePrereleases
+
+        // Setting: enableErrorReporting
+        //
+        if (key === 'enableErrorReporting') {
+            var settingEnableErrorReporting
+
+            // not configured
+            if ((value === null) || (value === undefined)) {
+                settingEnableErrorReporting = true
+                writeConsoleMsg('warn', 'userSettingRead ::: No user setting found for: _' + key + '_. Initializing it now with the default value: _' + settingEnableErrorReporting + '_.')
+                userSettingWrite('enableErrorReporting', true, true) // write the setting
+                sentry.enableSentry()
+            } else {
+                settingEnableErrorReporting = value
+                writeConsoleMsg('info', 'userSettingRead ::: Found configured _' + key + '_ with value: _' + settingEnableErrorReporting + '_.')
+
+                if (settingEnableErrorReporting === true) {
+                    sentry.enableSentry()
+                } else {
+                    sentry.disableSentry()
+                }
+            }
+            globalObjectSet('enableErrorReporting', settingEnableErrorReporting) // update the global object
+
+            // Optional: update the settings UI
+            if (optionalUpdateSettingUI === true) {
+                if (settingEnableErrorReporting === true) {
+                    $('#checkboxEnableErrorReporting').prop('checked', true)
+                } else {
+                    $('#checkboxEnableErrorReporting').prop('checked', false)
+                }
+            }
+        }
+        // end: enableErrorReporting
+
+
+    })
+}
+
+
+/**
+* @function globalObjectSet
+* @summary Updates the value of a single property from the global object in main.js
+* @description Updates the value of a single property from the global object in main.js
+* @param {String} property - Name of the property
+* @param {String} value - The new value of the property
+*/
+function globalObjectSet (property, value) {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.send('globalObjectSet', property, value)
+}
+
+
+
 // ----------------------------------------------------------------------------
 // EXPORT THE MODULE FUNCTIONS
 // ----------------------------------------------------------------------------
@@ -331,6 +475,9 @@ module.exports.createFolder = createFolder
 module.exports.getFontAwesomeFileIcon = getFontAwesomeFileIcon
 module.exports.appendToFile = appendToFile
 module.exports.bytesToSize = bytesToSize
+module.exports.userSettingWrite = userSettingWrite
+module.exports.userSettingRead = userSettingRead
+module.exports.globalObjectSet = globalObjectSet
 </code></pre>
         </article>
     </section>
@@ -345,7 +492,7 @@ module.exports.bytesToSize = bytesToSize
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 17 2020 19:18:37 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 17 2020 19:19:05 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
