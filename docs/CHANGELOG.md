@@ -24,6 +24,21 @@ The following categories are used:
 * ```Security```: in case of vulnerabilities.
 
 
+
+
+***
+
+### dirgistered 0.4.0 (20200317)
+#### ```Added```
+* Added general support for user-settings (using .json files)
+
+#### ```Changed```
+* Error reporting is now optional (via settings). See [#7](https://github.com/yafp/dirgistered/issues/7)
+
+#### ```Fixed```
+* Settings UI is now only offering function which are implemented. See [#6](https://github.com/yafp/dirgistered/issues/6)
+* Fixed datatables button on generated index files.  See [#8](https://github.com/yafp/dirgistered/issues/8)
+
 ***
 
 ### dirgistered 0.3.0 (20200316)
@@ -51,7 +66,6 @@ The following categories are used:
   * Updated ```electron-builder``` from ```22.4.0``` to ``22.4.1```
   * Updated ```electron-log``` from ```4.0.7``` to ```4.1.0```
   * Updated ```sentry``` from ```1.2.1``` to ```1.3.0```
-
 
 ***
 

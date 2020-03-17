@@ -21,6 +21,7 @@ available for:
 [![jsDoc](https://github.com/yafp/dirgistered/workflows/jsdoc/badge.svg)](https://yafp.github.io/dirgistered/)
 
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest.png)
+![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest_processing.png)
 
 </div>
 
@@ -29,18 +30,14 @@ available for:
 * scans a source directory
 * generates a browseable html output in a target directory
 
-
-## changelog
-Please see the [changelog](docs/CHANGELOG.md) for more details.
-
-
 ## download
 You'll find the latest releases [here](https://github.com/yafp/dirgistered/releases).
-
 
 ## license
 Please see the [LICENSE](LICENSE) for more details.
 
+## changelog
+Please see the [changelog](docs/CHANGELOG.md) for more details.
 
 ## support / fund
 If you want to support the development of **dirgistered** you can fund me on:
