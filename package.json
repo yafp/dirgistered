@@ -1,7 +1,7 @@
 {
     "name": "dirgistered",
     "productName": "dirgistered",
-    "version": "0.4.0",
+    "version": "0.4.20200318",
     "description": "a simple multi-platform directory indexer with html output",
     "main": "main.js",
     "scripts": {
@@ -199,10 +199,12 @@
         "electron-log": "^4.1.0",
         "electron-unhandled": "^3.0.2",
         "electron-util": "^0.14.0",
+        "graceful-fs": "^4.2.3",
         "intro.js": "^2.9.3",
         "is-online": "^8.2.1",
         "jquery": "^3.4.1",
         "noty": "^3.2.0-beta",
+        "popper.js": "^1.16.1",
         "time-stamp": "^2.2.0",
         "v8-compile-cache": "^2.1.0"
     },
