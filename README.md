@@ -45,6 +45,7 @@ If you want to support the development of **dirgistered** you can fund me on:
 * [github](https://github.com/sponsors/yafp)
 * [patreon](https://www.patreon.com/yafp)
 
+***
 
 ## developers
 
@@ -61,7 +62,8 @@ The current jsdoc documentation can be found on [https://yafp.github.io/dirgiste
 ### build
 Building **dirgistered** yourself is pretty easy. Please see the [building instructions](docs/BUILD.md) for more details.
 
+***
 
 ## credits
 ### icon
-* Application icon made by [srip](https://www.flaticon.com/authors/srip) from [https://www.flaticon.com/](www.flaticon.com). [Link](https://www.flaticon.com/free-icon/file-system_2345412?term=directory&page=1&position=24)
+* Application [icon](https://www.flaticon.com/free-icon/file-system_2345412?term=directory&page=1&position=24) made by [srip](https://www.flaticon.com/authors/srip) from [www.flaticon.com](https://www.flaticon.com/)
