@@ -2,7 +2,6 @@
     ; a comment
     ShowInstDetails show
     ShowUninstDetails show
-    SetDetailsPrint both
     !system "echo '' > ${BUILD_RESOURCES_DIR}/customHeader"
 !macroend
 
