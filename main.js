@@ -58,13 +58,13 @@ const mainWindowMinimalWindowWidth = 700
 const settingsWindowMinimalWindowHeight = 400
 const settingsWindowMinimalWindowWidth = 800
 
-
-var enableErrorReporting = true
+var enablePrereleases = false // set default value
+var enableErrorReporting = true // set default value
 global.sharedObj = {
     // settings UI
-    enableErrorReporting: enableErrorReporting,
+    enablePrereleases: enablePrereleases,
+    enableErrorReporting: enableErrorReporting
 }
-
 
 // ----------------------------------------------------------------------------
 // FUNCTIONS
@@ -237,13 +237,24 @@ function createWindowMain () {
         mainWindow.focus()
     })
 
+    // Call from renderer: Open settings folder
+    ipcMain.on('settingsFolderOpen', (event) => {
+        doLog('info', 'createWindowMain ::: Opened the users settings folder (ipcMain)')
+        const userSettingsPath = path.join(app.getPath('userData'), 'UserSettings') // change path for userSettings
+
+        if (shell.openItem(userSettingsPath) === true) {
+            doLog('info', 'createWindowMain ::: Opened the media-dupes subfolder in users download folder (ipcMain)')
+        } else {
+            doLog('error', 'createWindowMain ::: Failed to open the user download folder (ipcMain)')
+        }
+    })
+
     // Call from renderer: Update property from globalObj
     ipcMain.on('globalObjectSet', function (event, property, value) {
         doLog('info', 'globalObjectSet ::: Set _' + property + '_ to: _' + value + '_')
         global.sharedObj[property] = value
         console.warn(global.sharedObj)
     })
-
 
     // and load the index.html of the app.
     mainWindow.loadFile('app/index.html')

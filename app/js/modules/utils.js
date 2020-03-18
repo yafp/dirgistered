@@ -8,6 +8,7 @@
 // ----------------------------------------------------------------------------
 // REQUIRE MODULES
 // ----------------------------------------------------------------------------
+const sentry = require('./sentry.js') // sentry for error reporting
 
 // ----------------------------------------------------------------------------
 // FUNCTIONS
@@ -80,6 +81,8 @@ function showNotification (message, title = 'dirgistered') {
 
     myNotification.onclick = () => {
         writeConsoleMsg('info', 'showNotification ::: Notification clicked')
+        const { ipcRenderer } = require('electron')
+        ipcRenderer.send('showAndFocusMainUI') // tell main.js to show the main UI
     }
 }
 
@@ -247,12 +250,13 @@ function getFontAwesomeFileIcon (extension) {
 * @param {string} textToAppend - The actual text which should be appended
 */
 function appendToFile (filePath, textToAppend) {
-    var fs = require('fs')
+    // var fs = require('fs')
+    const fs = require('graceful-fs') // see #9
 
-    fs.appendFile(filePath, textToAppend, function (err) {
-        if (err) {
+    fs.appendFile(filePath, textToAppend, function (error) {
+        if (error) {
             writeConsoleMsg('error', 'appendToFile ::: Failed to append text to the .html file (' + filePath + ').')
-            showNoty('error', 'Error occured while trying to append text to an index file. Error: ' + err)
+            showNoty('error', 'Error occured while trying to append text to an index file. Error: ' + error)
         }
     })
 }
@@ -273,7 +277,6 @@ function bytesToSize (bytes) {
     return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
 }
 // source: https://gist.github.com/lanqy/5193417 and variations
-
 
 /**
 * @function userSettingWrite
@@ -337,7 +340,6 @@ function userSettingRead (key, optionalUpdateSettingUI = false) {
         var value = data.setting
         // writeConsoleMsg('info', 'userSettingRead :::  _' + key + '_ = _' + value + '_.')
 
-
         // Setting: enablePrereleases
         //
         if (key === 'enablePrereleases') {
@@ -398,11 +400,22 @@ function userSettingRead (key, optionalUpdateSettingUI = false) {
             }
         }
         // end: enableErrorReporting
-
-
     })
 }
 
+/**
+* @function globalObjectGet
+* @summary Gets a value of a single property from the global object in main.js
+* @description Gets a value of a single property from the global object in main.js
+* @param {String} property - Name of the property
+* @return {string} value - Value of the property
+*/
+function globalObjectGet (property) {
+    const { remote } = require('electron')
+    var value = remote.getGlobal('sharedObj')[property]
+    // writeConsoleMsg('info', 'globalObjectGet ::: Property: _' + property + '_ has the value: _' + value + '_.')
+    return value
+}
 
 /**
 * @function globalObjectSet
@@ -415,8 +428,6 @@ function globalObjectSet (property, value) {
     const { ipcRenderer } = require('electron')
     ipcRenderer.send('globalObjectSet', property, value)
 }
-
-
 
 // ----------------------------------------------------------------------------
 // EXPORT THE MODULE FUNCTIONS
@@ -433,4 +444,5 @@ module.exports.appendToFile = appendToFile
 module.exports.bytesToSize = bytesToSize
 module.exports.userSettingWrite = userSettingWrite
 module.exports.userSettingRead = userSettingRead
+module.exports.globalObjectGet = globalObjectGet
 module.exports.globalObjectSet = globalObjectSet

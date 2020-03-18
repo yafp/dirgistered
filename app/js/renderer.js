@@ -8,22 +8,22 @@ require('v8-compile-cache')
 // ----------------------------------------------------------------------------
 // IMPORT DIRGISTERED MODULES
 // ----------------------------------------------------------------------------
-const utils = require('./js/modules/utils.js')
-const sentry = require('./js/modules/sentry.js')
+const utils = require('./js/modules/utils.js') // general utilities
+const sentry = require('./js/modules/sentry.js') // sentry for error reporting
 const crash = require('./js/modules/crashReporter.js') // crashReporter
 const unhandled = require('./js/modules/unhandled.js') // electron-unhandled
 
 // ----------------------------------------------------------------------------
 // ERROR HANDLING
 // ----------------------------------------------------------------------------
-crash.initCrashReporter()
-unhandled.initUnhandled()
+crash.initCrashReporter() // the default electron crash reporter
+unhandled.initUnhandled() // to handle unhandled errors
 sentry.enableSentry() // sentry is enabled by default
 
 // ----------------------------------------------------------------------------
 // VARIABLES
 // ----------------------------------------------------------------------------
-var currentOutputPath = ''
+var currentOutputPath = '' // stores the currently selected output path
 
 // ----------------------------------------------------------------------------
 // FUNCTIONS
@@ -36,6 +36,7 @@ var currentOutputPath = ''
 * @memberof renderer
 */
 function titlebarInit () {
+    // Be aware: the font-size of .window-title (aka application name) is set by app/css/core.css
     const customTitlebar = require('custom-electron-titlebar')
 
     const myTitlebar = new customTitlebar.Titlebar({
@@ -49,9 +50,12 @@ function titlebarInit () {
         itemBackgroundColor: customTitlebar.Color.fromHex('#525252') // hover color
     })
 
-    // Be aware: the font-size of .window-title (aka application name) is set by app/css/core.css
     utils.writeConsoleMsg('info', 'titlebarInit ::: Initialized custom titlebar')
 }
+
+// ----------------------------------------------------------------------------
+// FUNCTIONS: main window
+// ----------------------------------------------------------------------------
 
 /**
 * @function uiSelectSource
@@ -207,7 +211,9 @@ function startIndexing () {
 * @memberof renderer
 */
 function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun = false) {
-    var fs = require('fs')
+    // var fs = require('fs')
+    const fs = require('graceful-fs') // see #9
+
     var path = require('path')
     var process = require('process')
 
@@ -238,7 +244,17 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     var i // used for loops
 
     // sync (async might be much better ... should check that)
-    var filenames = fs.readdirSync(moveFrom)
+    // var filenames = fs.readdirSync(moveFrom)
+
+    try {
+        var filenames = fs.readdirSync(moveFrom)
+    } catch (error) {
+        // An error occurred
+        console.error(error)
+        utils.showNoty('error', 'Unable to read the folder ' + moveFrom + '. Error: ' + error)
+        return
+    }
+
     for (i = 0; i < filenames.length; i++) {
         var stats = fs.statSync(path.join(moveFrom, filenames[i]))
         var fromPath = path.join(moveFrom, filenames[i])
@@ -275,6 +291,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
             fileSize.push(curFileSize)
         }
     }
+    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished reading content of folder: _' + sourceFolderPath + '_. Found: ' + dirNameArray.length + ' folders and ' + fileNameArray.length + ' files.')
 
     // generate index.html in target dir
     var curIndexPath = path.join(targetFolderPath, 'index.html')
@@ -315,7 +332,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexBaseCode += '<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>\n'
     // print
     indexBaseCode += '<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>\n'
-    // jszip 
+    // jszip
     indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js"></script>\n'
     // pdfmake
     indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js"></script>\n'
@@ -415,10 +432,10 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexFooterPost += '</script>\n'
 
     // create the actual .html file
-    fs.writeFile(curIndexPath, indexBaseCode, function (err) {
-        if (err) {
-            utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: An error ocurred creating the file _' + err.message + '_')
-            utils.showNoty('error', 'Error occured while creating the index file: ' + curIndexPath + '. Error: ' + err.message)
+    fs.writeFile(curIndexPath, indexBaseCode, function (error) {
+        if (error) {
+            utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: An error ocurred creating the file _' + error.message + '_')
+            utils.showNoty('error', 'Error occured while creating the index file: ' + curIndexPath + '. Error: ' + error.message)
         }
 
         utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Created single index for: ' + sourceFolderPath + '.')
@@ -464,156 +481,6 @@ function startIntro () {
 }
 
 /**
-* @function searchUpdate
-* @summary Checks if there is a new media-dupes release available
-* @description Compares the local app version number with the tag of the latest github release. Displays a notification in the settings window if an update is available. Is executed on app launch NOT on reload.
-* @memberof renderer
-* @param {booean} [silent] - Boolean with default value. Shows a feedback in case of no available updates If 'silent' = false. Special handling for manually triggered update search
-*/
-function searchUpdate (silent = true) {
-    loadingAnimationShow()
-
-    // check if pre-releases should be included or not
-    // var curEnablePrereleasesSetting = utils.globalObjectGet('enablePrereleases')
-    var curEnablePrereleasesSetting = false
-
-    // get url for github releases / api
-    const { urlGithubApiReleases } = require('./js/modules/githubUrls.js') // get API url
-
-    var remoteAppVersionLatest = '0.0.0'
-    var remoteAppVersionLatestPrerelease = false
-    var localAppVersion = '0.0.0'
-    var versions
-
-    // get local version
-    //
-    localAppVersion = require('electron').remote.app.getVersion()
-
-    var updateStatus = $.get(urlGithubApiReleases, function (data, status) {
-        // 3000 // in milliseconds
-
-        utils.writeConsoleMsg('info', 'searchUpdate ::: Accessing _' + urlGithubApiReleases + '_ ended with: _' + status + '_')
-
-        // success
-        versions = data.sort(function (v1, v2) {
-            // return semver.compare(v2.tag_name, v1.tag_name);
-            // console.error(v1.tag_name)
-            // console.error(v2.tag_name)
-        })
-
-        if (curEnablePrereleasesSetting === true) {
-            // user wants the latest release - ignoring if it is a prerelease or an official one
-            utils.writeConsoleMsg('info', 'searchUpdate ::: Including pre-releases in update search')
-            remoteAppVersionLatest = versions[0].tag_name // Example: 0.4.2
-            remoteAppVersionLatestPrerelease = versions[0].prerelease // boolean
-        } else {
-            // user wants official releases only
-            utils.writeConsoleMsg('info', 'searchUpdate ::: Ignoring pre-releases in update search')
-            // find the latest non pre-release build
-            // loop over the versions array to find the latest non-pre-release
-            var latestOfficialRelease
-            for (var i = 0; i < versions.length; i++) {
-                if (versions[i].prerelease === false) {
-                    latestOfficialRelease = i
-                    break
-                }
-            }
-
-            remoteAppVersionLatest = versions[i].tag_name // Example: 0.4.2
-            remoteAppVersionLatestPrerelease = versions[i].prerelease // boolean
-        }
-
-        // simulate different  update scenarios:
-        //
-        // localAppVersion = '0.0.1'; //  overwrite variable to simulate
-        // remoteAppVersionLatest = 'v0.6.0' //  overwrite variable to simulate
-
-        // strip the v away
-        // - up to 0.5.0 the tag used on github did not start with v.
-        // - comapring versions without leading chars is much easier.
-        localAppVersion = localAppVersion.replace('v', '')
-        remoteAppVersionLatest = remoteAppVersionLatest.replace('v', '')
-
-        utils.writeConsoleMsg('info', 'searchUpdate ::: Local dirgistered version: ' + localAppVersion)
-        utils.writeConsoleMsg('info', 'searchUpdate ::: Latest mdirgistered version: ' + remoteAppVersionLatest)
-
-        // If a stable (not a prelease) update is available - see #73
-        if (localAppVersion < remoteAppVersionLatest) {
-            utils.writeConsoleMsg('info', 'searchUpdate ::: Found update, notify user')
-
-            // prepare the message for the user - depending on the fact if it is a pre-release or not
-            var updateText
-            if (remoteAppVersionLatestPrerelease === false) {
-                updateText = 'A dirgistered update from <b>' + localAppVersion + '</b> to version <b>' + remoteAppVersionLatest + '</b> is available. Do you want to visit the release page?'
-            } else {
-                updateText = 'A dirgistered <b>pre-release</b> update from <b>' + localAppVersion + '</b> to version <b>' + remoteAppVersionLatest + '</b> is available. Do you want to visit the release page?'
-            }
-
-            // ask user using a noty confirm dialog
-            const Noty = require('noty')
-            var n = new Noty(
-                {
-                    theme: 'bootstrap-v4',
-                    layout: 'bottom',
-                    type: 'info',
-                    closeWith: [''], // to prevent closing the confirm-dialog by clicking something other then a confirm-dialog-button
-                    text: updateText,
-                    buttons: [
-                        Noty.button('Yes', 'btn btn-success mediaDupes_btnDefaultWidth', function () {
-                            n.close()
-                            openReleasesOverview()
-                        },
-                        {
-                            id: 'button1', 'data-status': 'ok'
-                        }),
-
-                        Noty.button('No', 'btn btn-secondary mediaDupes_btnDefaultWidth float-right', function () {
-                            n.close()
-                        })
-                    ]
-                })
-
-            // show the noty dialog
-            n.show()
-        } else {
-            utils.writeConsoleMsg('info', 'searchUpdate ::: No newer version of dirgistered found.')
-
-            // when executed manually via menu -> user should see result of this search
-            if (silent === false) {
-                utils.showNoty('info', 'No updates for <b>dirgistered (' + localAppVersion + ')</b> available.')
-            }
-        }
-
-        utils.writeConsoleMsg('info', 'searchUpdate ::: Successfully checked ' + urlGithubApiReleases + ' for available releases')
-    })
-        .done(function () {
-        // utils.writeConsoleMsg('info', 'searchUpdate ::: Successfully checked ' + urlGithubApiReleases + ' for available releases');
-        })
-
-        .fail(function () {
-            utils.writeConsoleMsg('info', 'searchUpdate ::: Checking ' + urlGithubApiReleases + ' for available releases failed.')
-            utils.showNoty('error', 'Checking <b>' + urlGithubApiReleases + '</b> for available media-dupes releases failed. Please troubleshoot your network connection.', 0)
-        })
-
-        .always(function () {
-            utils.writeConsoleMsg('info', 'searchUpdate ::: Finished checking ' + urlGithubApiReleases + ' for available releases')
-            loadingAnimationHide()
-        })
-}
-
-/**
-* @function openReleasesOverview
-* @summary Opens the media-dupes release page
-* @description Opens the url https://github.com/yafp/media-dupes/releases in the default browser. Used in searchUpdate().
-* @memberof renderer
-*/
-function openReleasesOverview () {
-    const { urlGitHubReleases } = require('./js/modules/githubUrls.js')
-    utils.writeConsoleMsg('info', 'openReleasesOverview ::: Opening _' + urlGitHubReleases + '_ to show available releases.')
-    utils.openURL(urlGitHubReleases)
-}
-
-/**
 * @function loadingAnimationShow
 * @summary Shows the loading animation / download spinner
 * @description Shows the loading animation / download spinner. applicationStateSet() is using this function
@@ -638,11 +505,23 @@ function loadingAnimationHide () {
     }
 }
 
+/**
+* @function processingShow
+* @summary Shows the processing / progress modal
+* @description Shows the processing / progress modal
+* @memberof renderer
+*/
 function processingShow () {
     $('#myModal').modal('show')
     utils.writeConsoleMsg('info', 'processingShow ::: Show processing modal')
 }
 
+/**
+* @function processingHide
+* @summary hides the processing / progress modal
+* @description hides the processing / progress modal
+* @memberof renderer
+*/
 function processingHide () {
     $('#myModal').modal('hide')
     utils.writeConsoleMsg('info', 'processingShow ::: Hide processing modal')
@@ -705,17 +584,6 @@ function openSettings () {
 }
 
 /**
-* @function windowSettingsClickIconBug
-* @summary Handles the click on the bug icon
-* @description Triggered from the settingsWindow.
-* @memberof renderer
-*/
-function windowSettingsClickIconBug () {
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.send('settingsToggleDevTools')
-}
-
-/**
 * @function windowMainBlurSet
 * @summary Can set a blur level for entire main ui
 * @description Can set a blur level for entire main ui. Is used on the mainUI when the settingsUI is open
@@ -741,8 +609,66 @@ function windowMainBlurSet (enable) {
     }
 }
 
+/**
+* @function settingsLoadAllOnAppStart
+* @summary Reads all user-setting-files and fills some global variables
+* @description Reads all user-setting-files and fills some global variables
+* @memberof renderer
+*/
+function settingsLoadAllOnAppStart () {
+    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now ...')
+    utils.userSettingRead('enablePrereleases') // pre-releases
+    utils.userSettingRead('enableErrorReporting') // get setting for error-reporting
+}
 
+// ----------------------------------------------------------------------------
+// FUNCTIONS: Settings UI
+// ----------------------------------------------------------------------------
 
+/**
+* @function settingsLoadAllOnSettingsUiLoad
+* @summary Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @description Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @memberof renderer
+*/
+function settingsLoadAllOnSettingsUiLoad () {
+    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now and adjust the settings UI')
+    utils.userSettingRead('enablePrereleases', true) // pre-releases
+    utils.userSettingRead('enableErrorReporting', true) // get setting for error-reporting
+}
+
+/**
+* @function windowSettingsClickIconBug
+* @summary Handles the click on the bug icon
+* @description Triggered from the settingsWindow.
+* @memberof renderer
+*/
+function windowSettingsClickIconBug () {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.send('settingsToggleDevTools')
+}
+
+/**
+* @function windowSettingsClickIconUserSettingsDir
+* @summary Handles the click on the settings icon
+* @description Triggered from the settingsWindow. Starts the open-settings-folder function from the module settings
+* @memberof renderer
+*/
+function windowSettingsClickIconUserSettingsDir () {
+    utils.writeConsoleMsg('info', 'windowSettingsClickIconUserSettingsDir ::: User wants to open the folder with user config files.')
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.send('settingsFolderOpen')
+}
+
+function windowSettingsClickCheckboxUpdatePolicy () {
+    if ($('#checkboxEnablePreReleases').is(':checked')) {
+        utils.writeConsoleMsg('info', 'settingsTogglePrereleases ::: Update-Search will now include pre-releases')
+        utils.userSettingWrite('enablePrereleases', true)
+    } else {
+        utils.writeConsoleMsg('info', 'settingsTogglePrereleases ::: Update-Search will ignore pre-releases')
+        utils.userSettingWrite('enablePrereleases', false)
+    }
+}
 
 /**
 * @function windowSettingsClickCheckboxErrorReporting
@@ -789,34 +715,155 @@ function windowSettingsClickCheckboxErrorReporting () {
     }
 }
 
+// ----------------------------------------------------------------------------
+// FUNCTIONS: Software Update
+// ----------------------------------------------------------------------------
 
 /**
-* @function settingsLoadAllOnAppStart
-* @summary Reads all user-setting-files and fills some global variables
-* @description Reads all user-setting-files and fills some global variables
+* @function searchUpdate
+* @summary Checks if there is a new dirgistered release available
+* @description Compares the local app version number with the tag of the latest github release. Displays a notification in the settings window if an update is available. Is executed on app launch NOT on reload.
 * @memberof renderer
+* @param {booean} [silent] - Boolean with default value. Shows a feedback in case of no available updates If 'silent' = false. Special handling for manually triggered update search
 */
-function settingsLoadAllOnAppStart () {
-    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now ...')
-    //utils.userSettingRead('enablePrereleases') // pre-releases
-    utils.userSettingRead('enableErrorReporting') // get setting for error-reporting
+function searchUpdate (silent = true) {
+    // check if pre-releases should be included or not
+    var curEnablePrereleasesSetting = utils.globalObjectGet('enablePrereleases')
 
+    // get url for github releases / api
+    const { urlGithubApiReleases } = require('./js/modules/githubUrls.js') // get API url
+
+    var remoteAppVersionLatest = '0.0.0'
+    var remoteAppVersionLatestPrerelease = false
+    var localAppVersion = '0.0.0'
+    var versions
+
+    // get local version
+    //
+    localAppVersion = require('electron').remote.app.getVersion()
+
+    var updateStatus = $.get(urlGithubApiReleases, function (data, status) {
+        // 3000 // in milliseconds
+
+        utils.writeConsoleMsg('info', 'searchUpdate ::: Accessing _' + urlGithubApiReleases + '_ ended with: _' + status + '_')
+
+        // success
+        versions = data.sort(function (v1, v2) {
+            // return semver.compare(v2.tag_name, v1.tag_name);
+            // console.error(v1.tag_name)
+            // console.error(v2.tag_name)
+        })
+
+        if (curEnablePrereleasesSetting === true) {
+            // user wants the latest release - ignoring if it is a prerelease or an official one
+            utils.writeConsoleMsg('info', 'searchUpdate ::: Including pre-releases in update search')
+            remoteAppVersionLatest = versions[0].tag_name // Example: 0.4.2
+            remoteAppVersionLatestPrerelease = versions[0].prerelease // boolean
+        } else {
+            // user wants official releases only
+            utils.writeConsoleMsg('info', 'searchUpdate ::: Ignoring pre-releases in update search')
+            // find the latest non pre-release build
+            // loop over the versions array to find the latest non-pre-release
+            var latestOfficialRelease
+            for (var i = 0; i < versions.length; i++) {
+                if (versions[i].prerelease === false) {
+                    latestOfficialRelease = i
+                    break
+                }
+            }
+
+            remoteAppVersionLatest = versions[i].tag_name // Example: 0.4.2
+            remoteAppVersionLatestPrerelease = versions[i].prerelease // boolean
+        }
+
+        // simulate different  update scenarios:
+        //
+        // localAppVersion = '0.0.1'; //  overwrite variable to simulate
+        // remoteAppVersionLatest = 'v0.6.0' //  overwrite variable to simulate
+
+        // strip the v away
+        // - up to 0.5.0 the tag used on github did not start with v.
+        // - comapring versions without leading chars is much easier.
+        localAppVersion = localAppVersion.replace('v', '')
+        remoteAppVersionLatest = remoteAppVersionLatest.replace('v', '')
+
+        utils.writeConsoleMsg('info', 'searchUpdate ::: Local dirgistered version: ' + localAppVersion)
+        utils.writeConsoleMsg('info', 'searchUpdate ::: Latest dirgistered version: ' + remoteAppVersionLatest)
+
+        // If a stable (not a prelease) update is available - see #73
+        if (localAppVersion < remoteAppVersionLatest) {
+            utils.writeConsoleMsg('info', 'searchUpdate ::: Found update, notify user')
+
+            // prepare the message for the user - depending on the fact if it is a pre-release or not
+            var updateText
+            if (remoteAppVersionLatestPrerelease === false) {
+                updateText = 'A dirgistered update from <b>' + localAppVersion + '</b> to version <b>' + remoteAppVersionLatest + '</b> is available. Do you want to visit the release page?'
+            } else {
+                updateText = 'A dirgistered <b>pre-release</b> update from <b>' + localAppVersion + '</b> to version <b>' + remoteAppVersionLatest + '</b> is available. Do you want to visit the release page?'
+            }
+
+            // ask user using a noty confirm dialog
+            const Noty = require('noty')
+            var n = new Noty(
+                {
+                    theme: 'bootstrap-v4',
+                    layout: 'bottom',
+                    type: 'info',
+                    closeWith: [''], // to prevent closing the confirm-dialog by clicking something other then a confirm-dialog-button
+                    text: updateText,
+                    buttons: [
+                        Noty.button('Yes', 'btn btn-success mediaDupes_btnDefaultWidth', function () {
+                            n.close()
+                            openReleasesOverview()
+                        },
+                        {
+                            id: 'button1', 'data-status': 'ok'
+                        }),
+
+                        Noty.button('No', 'btn btn-secondary mediaDupes_btnDefaultWidth float-right', function () {
+                            n.close()
+                        })
+                    ]
+                })
+
+            // show the noty dialog
+            n.show()
+        } else {
+            utils.writeConsoleMsg('info', 'searchUpdate ::: No newer version of dirgistered found.')
+
+            // when executed manually via menu -> user should see result of this search
+            if (silent === false) {
+                utils.showNoty('info', 'No updates for <b>dirgistered (' + localAppVersion + ')</b> available.')
+            }
+        }
+
+        utils.writeConsoleMsg('info', 'searchUpdate ::: Successfully checked ' + urlGithubApiReleases + ' for available releases')
+    })
+        .done(function () {
+        // utils.writeConsoleMsg('info', 'searchUpdate ::: Successfully checked ' + urlGithubApiReleases + ' for available releases');
+        })
+
+        .fail(function () {
+            utils.writeConsoleMsg('info', 'searchUpdate ::: Checking ' + urlGithubApiReleases + ' for available releases failed.')
+            utils.showNoty('error', 'Checking <b>' + urlGithubApiReleases + '</b> for available dirgistered releases failed. Please troubleshoot your network connection.', 0)
+        })
+
+        .always(function () {
+            utils.writeConsoleMsg('info', 'searchUpdate ::: Finished checking ' + urlGithubApiReleases + ' for available releases')
+        })
 }
-
 
 /**
-* @function settingsLoadAllOnSettingsUiLoad
-* @summary Reads all user-setting-files and fills some global variables and adjusts the settings UI
-* @description Reads all user-setting-files and fills some global variables and adjusts the settings UI
+* @function openReleasesOverview
+* @summary Opens the dirgistered release page
+* @description Opens the url https://github.com/yafp/dirgistered/releases in the default browser. Used in searchUpdate().
 * @memberof renderer
 */
-function settingsLoadAllOnSettingsUiLoad () {
-    utils.writeConsoleMsg('info', 'settingsLoadAllOnAppStart ::: Gonna read several user config files now and adjust the settings UI')
-    //utils.userSettingRead('enablePrereleases', true) // pre-releases
-    utils.userSettingRead('enableErrorReporting', true) // get setting for error-reporting
+function openReleasesOverview () {
+    const { urlGitHubReleases } = require('./js/modules/githubUrls.js')
+    utils.writeConsoleMsg('info', 'openReleasesOverview ::: Opening _' + urlGitHubReleases + '_ to show available releases.')
+    utils.openURL(urlGitHubReleases)
 }
-
-
 
 // ----------------------------------------------------------------------------
 // IPC
@@ -848,8 +895,8 @@ require('electron').ipcRenderer.on('blurMainUI', function () {
 
 /**
 * @name startSearchUpdatesSilent
-* @summary Triggers the check for media-dupes updates in silent mode
-* @description Called via ipc from main.js on-ready to start the search for media-dupes updates
+* @summary Triggers the check for dirgistered updates in silent mode
+* @description Called via ipc from main.js on-ready to start the search for dirgistered updates
 * @memberof renderer
 */
 require('electron').ipcRenderer.on('startSearchUpdatesSilent', function () {
