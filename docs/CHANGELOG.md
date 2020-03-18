@@ -25,6 +25,16 @@ The following categories are used:
 
 
 
+### dirgistered 0.5.0 (2020xxyy) - DEV
+#### ```Added```
+* Clicking a notification now gives focus to the main window. See [#12](https://github.com/yafp/dirgistered/issues/12)
+* Update-Search: Added a setting to include pre-releases into the search. See [#13](https://github.com/yafp/dirgistered/issues/13)
+* Settings UI: Cog icon now opens the user-settings folder.
+
+#### ```Fixed```
+* Fixed error when source folder is permission protected. Now throws an error. See [#10](https://github.com/yafp/dirgistered/issues/10)
+* Sentry was not properly included in utils.js. See [#11](https://github.com/yafp/dirgistered/issues/11)
+
 
 ***
 

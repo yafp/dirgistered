@@ -21,11 +21,12 @@ The project repository is using:
 
 for Continuos Integration aspects.
 
-### Building media-dupes
+### Building dirgistered
 Build instructions can be found [here](BUILD.md).
 
 ### Sentry (Crashreports)
 Crashreport informations are located [here](https://sentry.io/organizations/yafp/issues/?project=1847606).
+More informations about **dirgistered** sentry usage are located [here](SENTRY.md).
 
 ---
 
@@ -58,14 +59,6 @@ Crashreport informations are located [here](https://sentry.io/organizations/yafp
 ###### npm auditing (scan for vulnerabilities)
 * ```npm audit```
 
-##### Install packages
-
-###### install single package
-* ```npm install PACKAGENAME --save```
-
-###### npm: install single package in specific version
-* ```npm install PACKAGENAME@1.2.3```
-
 
 ##### Outdated packages
 
@@ -75,7 +68,9 @@ Crashreport informations are located [here](https://sentry.io/organizations/yafp
 or using ```npm-check```:
 
 * Install requirements: ```npm install -g npm-check```
-* Run check: ```npm-check```
+* Run check: ```npm-check``` or 
+* Run check: ```npm-check -s```
+
 
 
 ##### Updating
@@ -83,9 +78,6 @@ or using ```npm-check```:
 ###### check dependencies
 * Install requirements: ```npm install depcheck```
 * Run check: ```depcheck```
-
-###### update single package
-* ```npm install PACKAGENAME --save```
 
 ###### update all packages
 * ```npm update```
