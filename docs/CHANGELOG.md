@@ -25,16 +25,22 @@ The following categories are used:
 
 
 
-### dirgistered 0.5.0 (2020xxyy) - DEV
+### dirgistered 0.5.0 (20200327)
 #### ```Added```
 * Clicking a notification now gives focus to the main window. See [#12](https://github.com/yafp/dirgistered/issues/12)
 * Update-Search: Added a setting to include pre-releases into the search. See [#13](https://github.com/yafp/dirgistered/issues/13)
 * Settings UI: Cog icon now opens the user-settings folder.
+* Added handling for symbolic links
+
+#### ```Changed```
+* All ```fs.```interactions are now using the ```Sync``` variant to avoid issues.
+* Dependencies
+  * Updated ```electron``` from ```8.1.1``` to ```8.2.0s```
+  * Updated ```fontawesome-free``` from ```5.12.1``` to ``5.13.0```
 
 #### ```Fixed```
 * Fixed error when source folder is permission protected. Now throws an error. See [#10](https://github.com/yafp/dirgistered/issues/10)
 * Sentry was not properly included in utils.js. See [#11](https://github.com/yafp/dirgistered/issues/11)
-
 
 ***
 

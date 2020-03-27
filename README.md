@@ -20,8 +20,12 @@ available for:
 ![GitHub Release Date](https://img.shields.io/github/release-date/yafp/dirgistered.svg?style=flat)
 [![jsDoc](https://github.com/yafp/dirgistered/workflows/jsdoc/badge.svg)](https://yafp.github.io/dirgistered/)
 
+
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest.png)
+**UI** (showing default state)
+
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest_processing.png)
+**UI** (while generating an index)
 
 </div>
 
@@ -66,4 +70,4 @@ Building **dirgistered** yourself is pretty easy. Please see the [building instr
 
 ## credits
 ### icon
-* Application [icon](https://www.flaticon.com/free-icon/file-system_2345412?term=directory&page=1&position=24) made by [srip](https://www.flaticon.com/authors/srip) from [www.flaticon.com](https://www.flaticon.com/)
+* Application [icon](https://www.flaticon.com/free-icon/file-system_2345412) made by [srip](https://www.flaticon.com/authors/srip) from [www.flaticon.com](https://www.flaticon.com/)

@@ -118,10 +118,11 @@ function generateTimestamp (pattern = 'HH:mm:ss') {
 * @param {string} folderName- The given folder path which should be created
 */
 function createFolder (folderPath) {
-    var fs = require('fs')
+    // var fs = require('fs')
+    const fs = require('graceful-fs') // see #9
     if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath)
-        writeConsoleMsg('info', 'createFolder ::: Created target folder: ' + folderPath)
+        writeConsoleMsg('info', 'createFolder ::: Created target folder: _' + folderPath + '_.')
         return true
     } else {
         writeConsoleMsg('warn', 'createFolder ::: Folder: _' + folderPath + '_ already exists')
@@ -253,7 +254,7 @@ function appendToFile (filePath, textToAppend) {
     // var fs = require('fs')
     const fs = require('graceful-fs') // see #9
 
-    fs.appendFile(filePath, textToAppend, function (error) {
+    fs.appendFileSync(filePath, textToAppend, function (error) { // foo
         if (error) {
             writeConsoleMsg('error', 'appendToFile ::: Failed to append text to the .html file (' + filePath + ').')
             showNoty('error', 'Error occured while trying to append text to an index file. Error: ' + error)

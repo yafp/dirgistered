@@ -147,7 +147,14 @@ function validateSourceAndTarget () {
     }
 }
 
+/**
+* @function prepareIndexing
+* @summary Adds a delay before the indexing gets started
+* @description SAdds a delay before the indexing gets started. Ugly hack because otherwise the modal showing the processing wouldnt be displayed in time
+* @memberof renderer
+*/
 function prepareIndexing () {
+    utils.writeConsoleMsg('info', 'prepareIndexing ::: Preparing the indexing process ...')
     processingShow() // show processing modal
     loadingAnimationShow() // start spinner
 
@@ -164,9 +171,7 @@ function prepareIndexing () {
 * @memberof renderer
 */
 function startIndexing () {
-    var fs = require('fs')
     var path = require('path')
-
     utils.writeConsoleMsg('info', 'startIndexing ::: Starting')
 
     $('#button_startIndexing').prop('disabled', true) // disable the start button
@@ -218,8 +223,8 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     var process = require('process')
 
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Starting to create a single index')
-    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current source path: ' + sourceFolderPath)
-    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current target path: ' + targetFolderPath)
+    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current source path: _' + sourceFolderPath + '_.')
+    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Current target path: _' + targetFolderPath + '_.')
 
     // remember main target on initial run
     if (initialRun === true) {
@@ -232,26 +237,23 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     var moveTo = targetFolderPath
 
     // arrays for folder
-    var dirNameArray = []
-    var dirFullPathArray = []
-    var dirSize = []
+    var dirNameArray = [] // name of dir
+    var dirFullPathArray = [] // full path to dir
+    var dirSize = [] // site of dir
 
     // arrays for files
-    var fileNameArray = []
-    var fileFullPathArray = []
-    var fileSize = []
+    var fileNameArray = [] // name of file
+    var fileFullPathArray = [] // full path to file
+    var fileType = [] // file type (file or link)
+    var fileSize = [] // size of file
 
     var i // used for loops
-
-    // sync (async might be much better ... should check that)
-    // var filenames = fs.readdirSync(moveFrom)
 
     try {
         var filenames = fs.readdirSync(moveFrom)
     } catch (error) {
-        // An error occurred
-        console.error(error)
-        utils.showNoty('error', 'Unable to read the folder ' + moveFrom + '. Error: ' + error)
+        utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: Error while reading directory ' + moveFrom + '. Error: ' + error)
+        utils.showNoty('error', 'Unable to read the folder ' + moveFrom + '. Error: ' + error, 0)
         return
     }
 
@@ -262,33 +264,24 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
         // Store all directory informations in arrays
         //
         if (stats.isDirectory()) {
-            // store entire path
-            dirFullPathArray.push(fromPath)
-
-            // store folder name itself
-            var folderName = path.basename(fromPath)
-            dirNameArray.push(folderName)
-
-            // size (File Size in Bytes)
-            var curDirSize = utils.bytesToSize(stats.size)
-            dirSize.push(curDirSize)
-
-            // utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Found a subdir: ' + folderName)
+            dirFullPathArray.push(fromPath) // store entire path
+            dirNameArray.push(path.basename(fromPath)) // store folder name itself
+            dirSize.push(utils.bytesToSize(stats.size)) // size (File Size in Bytes)
         }
 
         // Store all file informations in arrays
         //
-        if (stats.isFile()) {
-            // store entire path
-            fileFullPathArray.push(fromPath)
+        if ((stats.isFile()) || (stats.isSymbolicLink())) {
+            fileFullPathArray.push(fromPath) // store entire path
+            fileNameArray.push(path.basename(fromPath)) // store file name itself
+            fileSize.push(utils.bytesToSize(stats.size)) // size
 
-            // store file name itself
-            var curFileName = path.basename(fromPath)
-            fileNameArray.push(curFileName)
-
-            // size
-            var curFileSize = utils.bytesToSize(stats.size)
-            fileSize.push(curFileSize)
+            if (stats.isSymbolicLink()) {
+                fileType.push('Link') // store file type
+                // utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: ' + fileFullPathArray.push(fromPath))
+            } else {
+                fileType.push('File') // store file type
+            }
         }
     }
     utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished reading content of folder: _' + sourceFolderPath + '_. Found: ' + dirNameArray.length + ' folders and ' + fileNameArray.length + ' files.')
@@ -338,15 +331,16 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js"></script>\n'
     indexBaseCode += '<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js"></script>\n'
 
-    // rest
+    // misc
     indexBaseCode += '</head>\n'
     indexBaseCode += '<body>\n'
     indexBaseCode += '<div class="container-fluid">\n'
     indexBaseCode += '<nav class="navbar navbar-light bg-light">\n'
     indexBaseCode += '<span class="navbar-brand mb-0 h1"><img src="https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/logo/128x128.png" width="32"> Source: <span class="badge badge-secondary">' + sourceFolderPath + '</span></span>\n'
+
     // add a back button if needed
     if (initialRun === false) {
-        indexBaseCode += '<a class="btn btn-sm btn-outline-secondary" href="../index.html"><i class="fas fa-backward" aria-hidden="true"></i> Back</a><br>'
+        indexBaseCode += '<a class="btn btn-sm btn-outline-danger" href="../index.html"><i class="fas fa-backward" aria-hidden="true"></i> Back</a><br>'
     }
     indexBaseCode += '</nav>\n'
 
@@ -367,14 +361,14 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
         for (i = 0; i < fileNameArray.length; i++) {
             var extension = fileNameArray[i].split('.').pop()
             var iconCode = utils.getFontAwesomeFileIcon(extension)
-            indexDataTablesBodyFilesText += '<tr><td>' + iconCode + '</td><td>' + fileNameArray[i] + '</td><td>File</td><td>' + fileSize[i] + '</td> </tr>\n'
+            indexDataTablesBodyFilesText += '<tr><td>' + iconCode + '</td><td>' + fileNameArray[i] + '</td><td>' + fileType[i] + '</td><td>' + fileSize[i] + '</td> </tr>\n'
         }
     }
 
     // indexDataTablesFoot
     const { indexDataTablesFoot } = require('./js/modules/indexGenerator.js')
 
-    // Section: Footer
+    // Section: Document Footer
     //
     indexFooter = ''
     indexFooter += '<footer class="page-footer font-small blue">\n'
@@ -432,7 +426,7 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     indexFooterPost += '</script>\n'
 
     // create the actual .html file
-    fs.writeFile(curIndexPath, indexBaseCode, function (error) {
+    fs.writeFileSync(curIndexPath, indexBaseCode, function (error) { // foo
         if (error) {
             utils.writeConsoleMsg('error', 'createSingleHTMLIndex ::: An error ocurred creating the file _' + error.message + '_')
             utils.showNoty('error', 'Error occured while creating the index file: ' + curIndexPath + '. Error: ' + error.message)
@@ -443,19 +437,20 @@ function createSingleHTMLIndex (sourceFolderPath, targetFolderPath, initialRun =
     // Finished writing index.html
 
     // Appending the generated texts to the index.html
-    //
     utils.appendToFile(curIndexPath, indexDataTablesHead)
     utils.appendToFile(curIndexPath, indexDataTablesBodyFolderText)
     utils.appendToFile(curIndexPath, indexDataTablesBodyFilesText)
     utils.appendToFile(curIndexPath, indexDataTablesFoot)
     utils.appendToFile(curIndexPath, indexFooter)
     utils.appendToFile(curIndexPath, indexFooterPost)
+    // FIXME: test if appending all at once is better
 
-    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished index creation for _' + sourceFolderPath + '_. checking sub-dirs now.')
+    utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Finished index creation for _' + sourceFolderPath + '_. Checking for sub-directories now.')
     updateUILog('Indexed directory: "' + sourceFolderPath + '"') // update UI
 
     // start indexing for each subdir
     for (var j = 0; j < dirFullPathArray.length; j++) {
+        utils.writeConsoleMsg('info', 'createSingleHTMLIndex ::: Found a sub-directory: _' + dirNameArray[j] + '_.')
         createSingleHTMLIndex(dirFullPathArray[j], targetFolderPath + '/' + dirNameArray[j], false) // FIXME
     }
 }
@@ -475,9 +470,9 @@ function logScrollToEnd () {
 * @description Starts a short intro / tutorial which explains the user-interface. Using introJs
 */
 function startIntro () {
-    utils.writeConsoleMsg('info', 'startIntro ::: Starting the dirgistered intro')
     const introJs = require('intro.js')
     introJs().start()
+    utils.writeConsoleMsg('info', 'startIntro ::: Started the dirgistered intro')
 }
 
 /**
@@ -486,7 +481,6 @@ function startIntro () {
 * @description Shows the loading animation / download spinner. applicationStateSet() is using this function
 */
 function loadingAnimationShow () {
-    // if ( $('#md_spinner').attr( "hidden" )) { // only if it isnt already displayed
     if ($('#div').data('hidden', true)) { // only if it isnt already displayed
         utils.writeConsoleMsg('info', 'loadingAnimationShow ::: Show spinner')
         $('#md_spinner').attr('hidden', false)
@@ -727,11 +721,8 @@ function windowSettingsClickCheckboxErrorReporting () {
 * @param {booean} [silent] - Boolean with default value. Shows a feedback in case of no available updates If 'silent' = false. Special handling for manually triggered update search
 */
 function searchUpdate (silent = true) {
-    // check if pre-releases should be included or not
-    var curEnablePrereleasesSetting = utils.globalObjectGet('enablePrereleases')
-
-    // get url for github releases / api
-    const { urlGithubApiReleases } = require('./js/modules/githubUrls.js') // get API url
+    const { urlGithubApiReleases } = require('./js/modules/githubUrls.js') // get url for github releases / api
+    var curEnablePrereleasesSetting = utils.globalObjectGet('enablePrereleases') // check if pre-releases should be included or not
 
     var remoteAppVersionLatest = '0.0.0'
     var remoteAppVersionLatestPrerelease = false
@@ -743,8 +734,6 @@ function searchUpdate (silent = true) {
     localAppVersion = require('electron').remote.app.getVersion()
 
     var updateStatus = $.get(urlGithubApiReleases, function (data, status) {
-        // 3000 // in milliseconds
-
         utils.writeConsoleMsg('info', 'searchUpdate ::: Accessing _' + urlGithubApiReleases + '_ ended with: _' + status + '_')
 
         // success
@@ -861,8 +850,8 @@ function searchUpdate (silent = true) {
 */
 function openReleasesOverview () {
     const { urlGitHubReleases } = require('./js/modules/githubUrls.js')
-    utils.writeConsoleMsg('info', 'openReleasesOverview ::: Opening _' + urlGitHubReleases + '_ to show available releases.')
     utils.openURL(urlGitHubReleases)
+    utils.writeConsoleMsg('info', 'openReleasesOverview ::: Opening _' + urlGitHubReleases + '_ to show available releases.')
 }
 
 // ----------------------------------------------------------------------------
