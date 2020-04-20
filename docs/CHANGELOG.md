@@ -25,6 +25,25 @@ The following categories are used:
 
 
 
+
+### dirgistered 0.5.0 (2020xxyy) DEV
+#### ```Added```
+
+#### ```Changed```
+
+* Updated dependencies
+  * Updated ```electron``` from ```8.2.0``` to ```8.2.3```
+  * Updated ```electron-builder``` from ```22.4.1``` to ```22.5.1```
+  * Updated ```is-online``` from ```8.2.1``` to ``8.3.0```
+  * Updated ```jsdoc``` from ```3.6.3``` to ``3.6.4```
+  * Updated ```jquery``` from ```3.4.1``` to ``3.5.0```
+  * Updated ```electron-is-dev``` from ```1.1.0``` to ``1.2.0```
+  * Updated ```electron-log``` from ```4.1.0``` to ``4.1.1```
+  * Updated ```electron-util``` from ```0.14.0``` to ``0.14.1```
+  * Updated ```popperjs/core``` from ```2.1.1``` to ``2.3.3```
+
+***
+
 ### dirgistered 0.5.0 (20200327)
 #### ```Added```
 * Clicking a notification now gives focus to the main window. See [#12](https://github.com/yafp/dirgistered/issues/12)
@@ -35,7 +54,7 @@ The following categories are used:
 #### ```Changed```
 * All ```fs.```interactions are now using the ```Sync``` variant to avoid issues.
 * Dependencies
-  * Updated ```electron``` from ```8.1.1``` to ```8.2.0s```
+  * Updated ```electron``` from ```8.1.1``` to ```8.2.0```
   * Updated ```fontawesome-free``` from ```5.12.1``` to ``5.13.0```
 
 #### ```Fixed```

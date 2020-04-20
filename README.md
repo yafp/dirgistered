@@ -22,9 +22,11 @@ available for:
 
 
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest.png)
+
 **UI** (showing default state)
 
 ![ui](https://raw.githubusercontent.com/yafp/dirgistered/master/.github/images/screenshots/ui_latest_processing.png)
+
 **UI** (while generating an index)
 
 </div>
