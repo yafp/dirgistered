@@ -177,7 +177,7 @@
         ]
     },
     "devDependencies": {
-        "electron": "^8.2.3",
+        "electron": "^9.1.1",
         "electron-builder": "^22.8.0",
         "electron-packager": "^15.0.0",
         "eslint": "^7.5.0",
@@ -187,9 +187,9 @@
         "standardx": "^5.0.0"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.13.0",
+        "@fortawesome/fontawesome-free": "^5.14.0",
         "@popperjs/core": "^2.4.4",
-        "@sentry/electron": "^1.5.1",
+        "@sentry/electron": "^1.5.2",
         "about-window": "^1.13.4",
         "animate.css": "^3.7.2",
         "bootstrap": "^4.4.1",

@@ -562,7 +562,8 @@ function openIndex () {
     var path = require('path')
     var pathToMainIndex = path.join(currentOutputPath, 'index.html')
     utils.writeConsoleMsg('info', 'openIndex ::: Should open: _' + pathToMainIndex + '_ in the default browser')
-    shell.openItem(pathToMainIndex)
+    //shell.openItem(pathToMainIndex)
+    shell.openPath(pathToMainIndex)
 }
 
 /**

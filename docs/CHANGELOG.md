@@ -26,27 +26,26 @@ The following categories are used:
 
 
 
-### dirgistered 0.6.0 (2020xxyy) DEV
-#### ```Added```
-
+### dirgistered 0.5.1 (2020xxyy) DEV
 #### ```Changed```
 * Updated dependencies
   * Updated ```about-window``` from ```1.13.2``` to ```1.13.4```
   * Updated `custom-electron-titlebar` from ```3.2.2``` to ```3.2.3```
   * Updated ```eslint``` from ```6.8.0``` to ```7.5.0```
-  * Updated ```electron``` from ```8.2.0``` to ```8.2.3```
+  * Updated ```electron``` from ```8.2.0``` to ```9.1.1```
   * Updated ```electron-builder``` from ```22.4.1``` to ```22.8.0```
   * Updated ```electron-packager``` from ```14.2.1``` to ```15.0.0```
   * Updated ```electron-is-dev``` from ```1.1.0``` to ``1.2.0```
   * Updated ```electron-log``` from ```4.1.0``` to ``4.2.2```
   * Updated ```electron-util``` from ```0.14.0``` to ``0.14.2```
   * Updated ```electron-json-storage``` from ```4.1.8``` to ``4.2.0```
+  * Updated `fortawesome/fontawesome-free` from `5.13.0` to `5.14.0`
   * Updated ```is-online``` from ```8.2.1``` to ``8.4.0```
   * Updated `graceful-fs` from `4.2.3` to `4.2.4`
   * Updated ```jsdoc``` from ```3.6.3``` to ``3.6.5```
   * Updated ```jquery``` from ```3.4.1``` to ``3.5.1```
   * Updated ```popperjs/core``` from ```2.1.1``` to ``2.4.4```
-  * Updated ```sentry/electron``` from ```1.3.0``` to ``1.5.1```
+  * Updated ```sentry/electron``` from ```1.3.0``` to ``1.5.2```
   * Updated `v8-compile-cache` from ```2.1.0``` to ```2.1.1```
 
 ***
