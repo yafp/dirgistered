@@ -32,7 +32,7 @@ The following categories are used:
   * Updated ```about-window``` from ```1.13.2``` to ```1.13.4```
   * Updated `custom-electron-titlebar` from ```3.2.2``` to ```3.2.4```
   * Updated ```eslint``` from ```6.8.0``` to ```7.11.0```
-  * Updated ```electron``` from ```8.2.0``` to ```9.1.1```
+  * Updated ```electron``` from ```8.2.0``` to ```9.3.1```
   * Updated ```electron-builder``` from ```22.4.1``` to ```22.8.0```
   * Updated ```electron-packager``` from ```14.2.1``` to ```15.0.0```
   * Updated ```electron-is-dev``` from ```1.1.0``` to ``1.2.0```
