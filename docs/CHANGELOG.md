@@ -32,7 +32,7 @@ The following categories are used:
   * Updated `about-window` from `1.13.2` to `1.14.0`
   * Updated `custom-electron-titlebar` from `3.2.2` to `3.2.6`
   * Updated `eslint` from `6.8.0` to `7.24.0`
-  * Updated `electron` from `8.2.0` to `9.1.1`
+  * Updated `electron` from `8.2.0` to `9.4.4`
   * Updated `electron-builder` from `22.4.1` to `22.10.5`
   * Updated `electron-packager` from `14.2.1` to `15.2.0`
   * Updated `electron-is-dev` from `1.1.0` to `1.2.0`
@@ -43,7 +43,7 @@ The following categories are used:
   * Updated `is-online` from `8.2.1` to `8.4.0`
   * Updated `graceful-fs` from `4.2.3` to `4.2.6`
   * Updated `jsdoc` from `3.6.3` to `3.6.6`
-  * Updated `jquery` from `3.4.1` to `3.5.1`
+  * Updated `jquery` from `3.4.1` to `3.6.0`
   * Updated `popperjs/core` from `2.1.1` to `2.4.4`
   * Updated `sentry/electron` from `1.3.0` to `2.4.0`
   * Updated `standardx` from `5.0.0` to `7.0.0`

@@ -177,7 +177,7 @@
         ]
     },
     "devDependencies": {
-        "electron": "^9.1.1",
+        "electron": "^9.4.4",
         "electron-builder": "^22.10.5",
         "electron-packager": "^15.2.0",
         "eslint": "^7.24.0",
@@ -202,7 +202,7 @@
         "graceful-fs": "^4.2.6",
         "intro.js": "^2.9.3",
         "is-online": "^8.4.0",
-        "jquery": "^3.5.1",
+        "jquery": "^3.6.0",
         "noty": "^3.2.0-beta",
         "popper.js": "^1.16.1",
         "time-stamp": "^2.2.0",
