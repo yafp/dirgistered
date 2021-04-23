@@ -41,7 +41,8 @@ jobs:
 
       - name: Install bsdtar rpm on Linux
         if: startsWith(matrix.os, 'ubuntu-latest')
-        run: sudo apt-get install bsdtar rpm
+        #run: sudo apt-get install bsdtar rpm
+        run: sudo apt-get install rpm libarchive-tools
 
       - name: Install snapcraft
         if: startsWith(matrix.os, 'ubuntu-latest')
