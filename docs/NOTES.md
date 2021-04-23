@@ -2,3 +2,15 @@
 
 # dirgistered
 ## notes
+
+
+### check for updated packages
+npm-check
+
+
+### audit
+npm audit
+
+
+### audit & fix
+npm audit fix
