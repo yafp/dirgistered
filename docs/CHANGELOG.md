@@ -26,13 +26,14 @@ The following categories are used:
 
 
 
-### dirgistered 0.5.1 (2021xxyy) DEV
+### dirgistered 0.5.1 (20210424)
 #### `Changed`
+* Upgraded electrom from `9` to `11`
 * Updated dependencies
   * Updated `about-window` from `1.13.2` to `1.14.0`
   * Updated `custom-electron-titlebar` from `3.2.2` to `3.2.6`
   * Updated `eslint` from `6.8.0` to `7.24.0`
-  * Updated `electron` from `8.2.0` to `9.4.4`
+  * Updated `electron` from `8.2.0` to `11.4.3`
   * Updated `electron-builder` from `22.4.1` to `22.10.5`
   * Updated `electron-packager` from `14.2.1` to `15.2.0`
   * Updated `electron-is-dev` from `1.1.0` to `1.2.0`

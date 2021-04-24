@@ -129,6 +129,7 @@ function createWindowSettings () {
         icon: path.join(__dirname, 'app/img/icon/icon.png'),
         webPreferences: {
             nodeIntegration: true,
+            enableRemoteModule: true,
             webSecurity: true // introduced in 0.3.0
         }
     })
@@ -214,6 +215,7 @@ function createWindowMain () {
         icon: path.join(__dirname, 'app/img/icon/icon.png'),
         webPreferences: {
             nodeIntegration: true,
+            enableRemoteModule: true,
             webSecurity: true // introduced in 0.3.0
             // preload: path.join(__dirname, 'preload.js')
         }

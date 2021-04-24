@@ -1,7 +1,7 @@
 {
     "name": "dirgistered",
     "productName": "dirgistered",
-    "version": "0.5.20210423",
+    "version": "0.5.1",
     "description": "a simple multi-platform directory indexer with html output",
     "main": "main.js",
     "scripts": {
@@ -177,7 +177,7 @@
         ]
     },
     "devDependencies": {
-        "electron": "^9.4.4",
+        "electron": "^11.4.3",
         "electron-builder": "^22.10.5",
         "electron-packager": "^15.2.0",
         "eslint": "^7.24.0",
