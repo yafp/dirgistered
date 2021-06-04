@@ -25,6 +25,23 @@ The following categories are used:
 
 
 
+### dirgistered 0.5.2 (2021xxyy)
+#### `Changed`
+* Updated dependencies
+  * Updated `custom-electron-titlebar` from `3.2.6` to `3.2.7`
+  * Updated `electron-log` from `4.3.4` to `4.3.5`
+  * Updated `electron-util` from `0.15.0` to `0.16.0`
+  * Updated `eslint` from `7.24.0` to `7.27.0`
+  * Updated `fortawesome/fontawesome-free` from `5.14.0` to `5.15.3`
+  * Updated `jsdoc` from `3.6.6` to `3.6.7`
+  * Updated `popperjs/core` from `2.4.4` to `2.9.2`
+  * Updated `sentry/electron` from `2.4.0` to `2.4.1`
+
+#### `Fixed`
+* The Progress popup while indexing showed the wrong application name. Is now fixed.
+
+
+
 
 ### dirgistered 0.5.1 (20210424)
 #### `Changed`
